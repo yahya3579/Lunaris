@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ClientReviews = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [screenSize, setScreenSize] = useState('desktop');
+  const [screenSize, setScreenSize] = useState("desktop");
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
@@ -17,11 +17,11 @@ const ClientReviews = () => {
       const width = window.innerWidth;
       let newScreenSize;
       if (width < 768) {
-        newScreenSize = 'mobile'; // 1 card
+        newScreenSize = "mobile"; // 1 card
       } else if (width < 992) {
-        newScreenSize = 'tablet'; // 2 cards
+        newScreenSize = "tablet"; // 2 cards
       } else {
-        newScreenSize = 'desktop'; // 3 cards
+        newScreenSize = "desktop"; // 3 cards
       }
       setScreenSize(newScreenSize);
       // Reset slide when switching between screen sizes
@@ -30,8 +30,8 @@ const ClientReviews = () => {
       }
     };
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, [screenSize]);
 
   // Autoplay effect
@@ -42,87 +42,145 @@ const ClientReviews = () => {
     return () => clearInterval(interval);
   }, [currentSlide, screenSize]);
 
-  // Sample review data based on the image
+  // Updated review data from user
   const reviews = [
     {
       id: 1,
-      name: 'Leo',
-      location: 'Hanibad, Pakistan',
-      rating: 4,
-      title: 'Excellent Property Management Service',
-      review: 'Lunaris provided exceptional property management services. The team was professional, responsive, and helped me find the perfect property within my budget. Their attention to detail and customer service exceeded my expectations. I would definitely recommend them to anyone looking for reliable property solutions.',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+      name: "Emilia Rossi",
+      location: "Dubai Client",
+      rating: 5,
+      title: "Maximized Earnings & Friendly Team",
+      review:
+        "I had no idea I was undervaluing my property until Lunaris stepped in. They optimized everything, and now my monthly earnings have nearly doubled. On top of that, their team is incredibly approachable and easy to work with.",
+      avatar:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
     },
     {
       id: 2,
-      name: 'Usman',
-      location: 'Islamabad, Pakistan',
+      name: "Ahmed Al Mansoori",
+      location: "Dubai Client",
       rating: 5,
-      title: 'Outstanding Investment Guidance',
-      review: 'Working with Lunaris was a game-changer for my real estate investments. Their market knowledge and strategic insights helped me make informed decisions. The entire process was smooth, transparent, and profitable. I couldn\'t have asked for better guidance in the property market.',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face'
+      title: "Luxury Property Partnership",
+      review:
+        "I've tried working with other co-hosts, but Lunaris truly feels like a partner. They are prompt, professional, and have a sharp understanding of managing luxury properties.",
+      avatar:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
     },
     {
       id: 3,
-      name: 'Bilal',
-      location: 'Islamabad, Pakistan',
-      rating: 4,
-      title: 'Professional and Reliable Team',
-      review: 'The Lunaris team demonstrated exceptional professionalism throughout my property buying journey. They were always available to answer questions, provided honest advice, and made the complex process seem effortless. Their market expertise and commitment to client satisfaction is truly impressive.',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'
+      name: "Olivia Thompson",
+      location: "US Client",
+      rating: 5,
+      title: "True Business Partner",
+      review:
+        "Lunaris transformed how I manage my property. Their insight and responsiveness make them more than just a co-host—they feel like a genuine partner in growing my business.",
+      avatar:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
     },
     {
       id: 4,
-      name: 'Sara', 
-      location: 'Karachi, Pakistan',
-      rating: 5,
-      title: 'Seamless Property Transaction',
-      review: 'From start to finish, Lunaris made my property purchase incredibly smooth. Their team handled all the paperwork, negotiations, and legal requirements with utmost care. The transparency in their process and their commitment to finding properties that match my needs was remarkable.',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face'
+      name: "James Carter",
+      location: "UK Client",
+      rating: 4,
+      title: "Proactive & Professional Co-host",
+      review:
+        "After collaborating with several co-hosts, I can confidently say Lunaris stands out. They're proactive, professional, and know exactly how to maximize a property's potential.",
+      avatar:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
     },
     {
       id: 5,
-      name: 'Ahmed',
-      location: 'Lahore, Pakistan',
-      rating: 4,
-      title: 'Trusted Property Advisor',
-      review: 'Lunaris has been my trusted property advisor for multiple transactions. Their deep understanding of market trends and honest approach to business has saved me both time and money. They always prioritize client interests and deliver beyond expectations.',
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face'
+      name: "Sara Khalid",
+      location: "Middle East Client",
+      rating: 5,
+      title: "Premium Listing Expertise",
+      review:
+        "I've worked with several property managers, but Lunaris is the first that truly understands the value of partnership. They are reliable, professional, and highly skilled in handling premium listings.",
+      avatar:
+        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=150&h=150&fit=crop&crop=face",
     },
     {
       id: 6,
-      name: 'Fatima',
-      location: 'Multan, Pakistan',
+      name: "Lukas Schneider",
+      location: "European Client (Germany)",
+      rating: 4,
+      title: "Effortless Management & Revenue Growth",
+      review:
+        "Lunaris made managing my property effortless. Their insights increased my revenue and their team is always approachable and quick to help.",
+      avatar:
+        "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150&h=150&fit=crop&crop=face",
+    },
+    {
+      id: 7,
+      name: "Emily Brooks",
+      location: "Canadian Client",
       rating: 5,
-      title: 'Exceptional Customer Service',
-      review: 'The level of customer service provided by Lunaris is exceptional. They took time to understand my requirements, showed me relevant properties, and provided valuable insights about each location. Their post-purchase support has been equally impressive.',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face'
-    }
+      title: "Unmatched High-End Property Service",
+      review:
+        "I've worked with other co-hosts, but Lunaris feels like a real partner. Their professionalism, responsiveness, and knowledge of high-end properties are unmatched.",
+      avatar:
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
+    },
   ];
 
   // Calculate max slides based on screen size
   const getCardsToShow = () => {
     switch (screenSize) {
-      case 'mobile': return 1;  // <768px
-      case 'tablet': return 2;  // 768px-992px
-      case 'desktop': return 3; // ≥992px
-      default: return 3;
+      case "mobile":
+        return 1; // <768px
+      case "tablet":
+        return 2; // 768px-992px
+      case "desktop":
+        return 3; // ≥992px
+      default:
+        return 3;
     }
   };
-  
+
   const cardsToShow = getCardsToShow();
   const maxSlide = Math.max(0, reviews.length - cardsToShow);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
+    if (currentSlide >= maxSlide) {
+      setCurrentSlide(0);
+    } else {
+      setCurrentSlide(currentSlide + 1);
+    }
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev <= 0 ? maxSlide : prev - 1));
+    if (currentSlide <= 0) {
+      setCurrentSlide(maxSlide);
+    } else {
+      setCurrentSlide(currentSlide - 1);
+    }
   };
 
   const goToSlide = (index) => {
     setCurrentSlide(Math.min(index, maxSlide));
+  };
+
+  // Function to check if card is in middle position
+  const getCardPosition = (index) => {
+    if (screenSize === "mobile") {
+      return index === currentSlide ? "center" : "side";
+    } else if (screenSize === "tablet") {
+      const visibleCards = [currentSlide, currentSlide + 1];
+      if (visibleCards.includes(index)) {
+        return "center";
+      }
+      return "side";
+    } else {
+      // desktop
+      const middleIndex = currentSlide + 1;
+      if (index === middleIndex) {
+        return "center";
+      } else if (index === currentSlide || index === currentSlide + 2) {
+        return "side";
+      }
+      return "hidden";
+    }
   };
 
   // Mouse drag handlers
@@ -132,14 +190,14 @@ const ClientReviews = () => {
     setCurrentX(e.clientX);
     setDragOffset(0);
     if (carouselRef.current) {
-      carouselRef.current.style.cursor = 'grabbing';
-      carouselRef.current.style.userSelect = 'none';
+      carouselRef.current.style.cursor = "grabbing";
+      carouselRef.current.style.userSelect = "none";
     }
   };
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
-    
+
     e.preventDefault();
     setCurrentX(e.clientX);
     const offset = e.clientX - startX;
@@ -148,11 +206,11 @@ const ClientReviews = () => {
 
   const handleMouseUp = () => {
     if (!isDragging) return;
-    
+
     setIsDragging(false);
     if (carouselRef.current) {
-      carouselRef.current.style.cursor = 'grab';
-      carouselRef.current.style.userSelect = 'auto';
+      carouselRef.current.style.cursor = "grab";
+      carouselRef.current.style.userSelect = "auto";
     }
 
     const dragThreshold = 50; // Minimum drag distance to trigger slide change
@@ -177,26 +235,68 @@ const ClientReviews = () => {
     }
   };
 
+  // Touch drag handlers for mobile
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 1) {
+      setIsDragging(true);
+      setStartX(e.touches[0].clientX);
+      setCurrentX(e.touches[0].clientX);
+      setDragOffset(0);
+      if (carouselRef.current) {
+        carouselRef.current.style.cursor = "grabbing";
+        carouselRef.current.style.userSelect = "none";
+      }
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    setCurrentX(e.touches[0].clientX);
+    const offset = e.touches[0].clientX - startX;
+    setDragOffset(offset);
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    if (carouselRef.current) {
+      carouselRef.current.style.cursor = "grab";
+      carouselRef.current.style.userSelect = "auto";
+    }
+    const dragThreshold = 50;
+    const dragDistance = currentX - startX;
+    if (Math.abs(dragDistance) > dragThreshold) {
+      if (dragDistance > 0) {
+        prevSlide();
+      } else {
+        nextSlide();
+      }
+    }
+    setDragOffset(0);
+  };
+
   // Add global mouse event listeners
   useEffect(() => {
     const handleGlobalMouseMove = (e) => handleMouseMove(e);
     const handleGlobalMouseUp = () => handleMouseUp();
 
     if (isDragging) {
-      document.addEventListener('mousemove', handleGlobalMouseMove);
-      document.addEventListener('mouseup', handleGlobalMouseUp);
+      document.addEventListener("mousemove", handleGlobalMouseMove);
+      document.addEventListener("mouseup", handleGlobalMouseUp);
     }
 
     return () => {
-      document.removeEventListener('mousemove', handleGlobalMouseMove);
-      document.removeEventListener('mouseup', handleGlobalMouseUp);
+      document.removeEventListener("mousemove", handleGlobalMouseMove);
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
     };
   }, [isDragging, startX, currentX, handleMouseMove, handleMouseUp]);
 
   // Calculate transform with drag offset
   const getTransform = () => {
     const baseTransform = -currentSlide * (100 / cardsToShow);
-    const dragTransform = isDragging ? (dragOffset / carouselRef.current?.offsetWidth) * 100 : 0;
+    const dragTransform = isDragging
+      ? (dragOffset / carouselRef.current?.offsetWidth) * 100
+      : 0;
     return `translateX(${baseTransform + dragTransform}%)`;
   };
 
@@ -204,7 +304,9 @@ const ClientReviews = () => {
     return [...Array(5)].map((_, i) => (
       <svg
         key={i}
-        className={`w-4 h-4 ${i < rating ? 'text-orange-400 fill-current' : 'text-gray-300'}`}
+        className={`w-4 h-4 ${
+          i < rating ? "text-orange-400 fill-current" : "text-gray-300"
+        }`}
         viewBox="0 0 24 24"
       >
         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -217,7 +319,7 @@ const ClientReviews = () => {
       className="client-reviews-section bg-gray-50 py-16"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: 'easeOut' }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
@@ -229,94 +331,154 @@ const ClientReviews = () => {
         >
           <div className="flex items-center mb-8 w-full justify-center">
             {/* Left Arrow */}
-            <svg width="32" height="12" viewBox="0 0 32 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
-              <path d="M12 6H0" stroke="#CBE9FF" strokeWidth="2"/>
-              <path d="M6 1L0 6L6 11" stroke="#CBE9FF" strokeWidth="2"/>
+            <svg
+              width="32"
+              height="12"
+              viewBox="0 0 32 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="mr-2"
+            >
+              <path d="M12 6H0" stroke="#CBE9FF" strokeWidth="2" />
+              <path d="M6 1L0 6L6 11" stroke="#CBE9FF" strokeWidth="2" />
             </svg>
             {/* Heading */}
-            <h2 className="text-[#1A2A49] font-bold text-2xl md:text-3xl tracking-wide" style={{fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.05em'}}>CLIENT REVIEW</h2>
+            <h2
+              className="text-[#1A2A49] font-bold text-2xl md:text-3xl tracking-wide"
+              style={{
+                fontFamily: "Orbitron, sans-serif",
+                letterSpacing: "0.05em",
+              }}
+            >
+              CLIENT REVIEW
+            </h2>
             {/* Right Line */}
-            <div className="flex-1 ml-2 h-0.5 rounded-full" style={{minWidth: '32px', background: '#CBE9FF'}}></div>
+            <div
+              className="flex-1 ml-2 h-0.5 rounded-full"
+              style={{ minWidth: "32px", background: "#CBE9FF" }}
+            ></div>
           </div>
         </motion.div>
 
         {/* Reviews Carousel */}
         <div className="relative max-w-6xl mx-auto">
           <motion.div
-            className="overflow-hidden"
+            className="overflow-hidden pt-12"
             ref={carouselRef}
             onMouseDown={handleMouseDown}
             onMouseLeave={handleMouseLeave}
-            style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{ cursor: isDragging ? "grabbing" : "grab" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <motion.div
-              className={`flex ${isDragging ? '' : 'transition-transform duration-300 ease-in-out'}`}
+              className={`flex ${
+                isDragging
+                  ? ""
+                  : "transition-transform duration-300 ease-in-out"
+              }`}
               style={{ transform: getTransform() }}
               initial={false}
               animate={isDragging ? {} : {}}
             >
               <AnimatePresence initial={false}>
-                {reviews.map((review, index) => (
-                  <motion.div
-                    key={review.id}
-                    className={`${
-                      screenSize === 'mobile' ? 'w-full' : 
-                      screenSize === 'tablet' ? 'w-1/2' : 
-                      'w-1/3'
-                    } flex-shrink-0 px-4`}
-                    initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 40, scale: 0.95 }}
-                    transition={{ duration: 0.5, delay: 0.1 * index }}
-                  >
+                {reviews.map((review, index) => {
+                  const cardPosition = getCardPosition(index);
+                  const isCenter = cardPosition === "center";
+
+                  return (
                     <motion.div
-                      className={`review-card bg-white rounded-lg p-6 border transition-all duration-300 ${
-                        (screenSize === 'mobile' && index === currentSlide) || 
-                        (screenSize === 'tablet' && (index === currentSlide || index === currentSlide + 1)) ||
-                        (screenSize === 'desktop' && index === currentSlide + 1)
-                          ? 'shadow-md border-gray-200 transform scale-105' 
-                          : 'shadow-sm border-gray-100'
-                      }`}
-                      whileHover={{ scale: 1.07, boxShadow: '0 8px 32px rgba(0,0,0,0.10)' }}
-                      initial={false}
+                      key={review.id}
+                      className={`${
+                        screenSize === "mobile"
+                          ? "w-full"
+                          : screenSize === "tablet"
+                          ? "w-1/2"
+                          : "w-1/3"
+                      } flex-shrink-0 px-4 ${isCenter ? "z-10" : "z-0"}`}
+                      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                      animate={{
+                        opacity: 1,
+                        y: isCenter ? -8 : 0,
+                        scale: 1,
+                      }}
+                      exit={{ opacity: 0, y: 40, scale: 0.95 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: 0.1 * index,
+                        y: { duration: 0.3, ease: "easeOut" },
+                      }}
                     >
-                      {/* User Info */}
-                      <div className="flex items-center mb-4">
-                        <motion.div
-                          className="w-12 h-12 rounded-full bg-gray-200 mr-3 overflow-hidden"
-                          initial={{ scale: 0.8, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ duration: 0.4, delay: 0.2 }}
-                        >
-                          <img 
-                            src={review.avatar}
-                            alt={review.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </motion.div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900 text-sm">{review.name}</h4>
-                          <p className="text-xs text-gray-500">{review.location}</p>
+                      <motion.div
+                        className={`review-card bg-white rounded-lg p-6 border transition-all duration-300 ${
+                          isCenter
+                            ? "shadow-lg border-blue-200 ring-2 ring-blue-100"
+                            : "shadow-sm border-gray-100"
+                        }`}
+                        animate={{
+                          scale: isCenter ? 1.08 : 1,
+                          y: isCenter ? -12 : 0,
+                        }}
+                        whileHover={{
+                          scale: isCenter ? 1.12 : 1.05,
+                          y: isCenter ? -16 : -4,
+                          boxShadow: isCenter
+                            ? "0 20px 40px rgba(0,0,0,0.15)"
+                            : "0 8px 32px rgba(0,0,0,0.10)",
+                        }}
+                        transition={{
+                          duration: 0.3,
+                          ease: "easeOut",
+                        }}
+                        initial={false}
+                      >
+                        {/* User Info */}
+                        <div className="flex items-center mb-4">
+                          <motion.div
+                            className="w-12 h-12 rounded-full bg-gray-200 mr-3 overflow-hidden"
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.4, delay: 0.2 }}
+                          >
+                            <img
+                              src={review.avatar}
+                              alt={review.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </motion.div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 text-sm">
+                              {review.name}
+                            </h4>
+                            <p className="text-xs text-gray-500">
+                              {review.location}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      {/* Rating */}
-                      <div className="flex items-center mb-3">
-                        {renderStars(review.rating)}
-                      </div>
-                      {/* Review Title */}
-                      <h5 className="font-semibold text-gray-900 mb-3 text-sm">
-                        {review.title}
-                      </h5>
-                      {/* Review Text */}
-                      <p className="text-xs text-gray-600 leading-relaxed">
-                        {review.review}
-                      </p>
+                        {/* Rating */}
+                        <div className="flex items-center mb-3">
+                          {renderStars(review.rating)}
+                        </div>
+                        {/* Review Title */}
+                        <h5
+                          className={`font-semibold mb-3 text-sm ${
+                            isCenter ? "text-blue-900" : "text-gray-900"
+                          }`}
+                        >
+                          {review.title}
+                        </h5>
+                        {/* Review Text */}
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          {review.review}
+                        </p>
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
-                ))}
+                  );
+                })}
               </AnimatePresence>
             </motion.div>
           </motion.div>
@@ -333,13 +495,18 @@ const ClientReviews = () => {
               onClick={prevSlide}
               className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full transition-colors"
             >
-              <svg 
-                className="w-4 h-4 text-gray-600" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-4 h-4 text-gray-600"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
 
@@ -350,9 +517,9 @@ const ClientReviews = () => {
                   key={index}
                   onClick={() => goToSlide(index)}
                   className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentSlide 
-                      ? 'bg-gray-800' 
-                      : 'bg-gray-300 hover:bg-gray-400'
+                    index === currentSlide
+                      ? "bg-gray-800"
+                      : "bg-gray-300 hover:bg-gray-400"
                   }`}
                   whileHover={{ scale: 1.2 }}
                   initial={false}
@@ -365,13 +532,18 @@ const ClientReviews = () => {
               onClick={nextSlide}
               className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full transition-colors"
             >
-              <svg 
-                className="w-4 h-4 text-gray-600" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-4 h-4 text-gray-600"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </motion.div>

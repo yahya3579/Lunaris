@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import lunarisLogo from '../assets/images/Lunaris-management-logo.png';
 import landingPageBg from '../assets/images/landing-page.svg';
 import landingBgJpeg from '../assets/images/landing-bg.jpeg';
+import TextType from './TextType';
 
 const LandingPage = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -185,9 +186,18 @@ const LandingPage = () => {
                 transition={{ duration: 0.7, delay: 0.4 }}
               >
                 <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
-                  FIND YOUR<br />
-                  PLACE<br />
-                  OF DREAM
+                  <TextType 
+                    text={["FIND YOUR", "PLACE", "OF DREAM"]}
+                    typingSpeed={70}
+                    pauseDuration={1500}
+                    showCursor={true}
+                    cursorCharacter="|"
+                    cursorClassName="text-white/70"
+                    as="div"
+                    className="block"
+                    startOnVisible={true}
+                    textColors={['#fff', '#fff', '#fff']}
+                  />
                 </h1>
               </motion.div>
               <motion.p

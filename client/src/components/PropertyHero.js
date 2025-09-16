@@ -4,6 +4,7 @@ import { useInView } from "framer-motion";
 import { FiSearch } from "react-icons/fi";
 import houseImage from "../assets/images/landing-section.png"; // replace with your image path
 import { useNavigate } from "react-router-dom";
+import TextType from "./TextType";
 
 
 export default function PropertyHero({ onSearch }) {
@@ -97,8 +98,16 @@ export default function PropertyHero({ onSearch }) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.6 }}
               >
-                <span className="block">250+ LISTED</span>
-                <span className="block">PROPERTIES</span>
+                <TextType 
+                  text={["250+ LISTED", "PROPERTIES"]}
+                  typingSpeed={50}
+                  pauseDuration={2000}
+                  showCursor={true}
+                  cursorCharacter="|"
+                  cursorClassName="text-gray-400"
+                  as="div"
+                  className="block"
+                />
               </motion.h1>
             </motion.div>
           </div>

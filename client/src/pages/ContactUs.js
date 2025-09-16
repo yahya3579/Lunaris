@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import lunarisLogo from '../assets/images/Lunaris-management-logo.png';
 import { Link } from 'react-router-dom';
 import { 
@@ -157,6 +158,78 @@ const ContactUs = () => {
     }
   ];
 
+  // Uiverse.io Card CSS (scoped for features section, using Tailwind theme colors)
+  const cardStyles = `
+    .feature-uiverse-card {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      background: linear-gradient(135deg, #1e293b 0%, #2563eb 100%);
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      perspective: 1000px;
+      box-shadow: 0 0 0 5px #2563eb20;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      margin: 0 auto;
+    }
+    .feature-uiverse-card svg {
+      width: 56px;
+      height: 56px;
+      fill: #fff;
+      background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+      border-radius: 50%;
+      padding: 12px;
+      box-shadow: 0 4px 16px #2563eb40;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .feature-uiverse-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px #2563eb40;
+    }
+    .feature-uiverse-card__content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 28px 24px 24px 24px;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e0e7ef 100%);
+      transform: rotateX(-90deg);
+      transform-origin: bottom;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px #2563eb10;
+    }
+    .feature-uiverse-card:hover .feature-uiverse-card__content {
+      transform: rotateX(0deg);
+    }
+    .feature-uiverse-card__title {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #1e293b;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .feature-uiverse-card:hover svg {
+      scale: 0;
+    }
+    .feature-uiverse-card__description {
+      margin: 14px 0 0;
+      font-size: 1rem;
+      color: #334155;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+  `;
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
@@ -263,14 +336,24 @@ const ContactUs = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative hero-bg text-white py-24 overflow-hidden">
+      <motion.section
+        className="relative hero-bg text-white py-24 overflow-hidden"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
           }}></div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`text-center transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
               Let's Connect
             </h1>
@@ -278,43 +361,77 @@ const ContactUs = () => {
               Ready to turn your real estate dreams into reality? We're here to guide you every step of the way with expert advice and personalized service.
             </p>
             <div className="mt-8 flex justify-center">
-              <div className="animate-bounce">
+              <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 1.2 }}>
                 <FaArrowRight className="text-blue-300 text-2xl rotate-90" />
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+  </motion.section>
 
       {/* Features Section */}
-      <section className="py-16 bg-white">
+      {/* Features Section with Uiverse.io Card Design */}
+      <motion.section
+        className="py-16 bg-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.18,
+            },
+          },
+        }}
+      >
+        {/* Inject Uiverse.io Card CSS */}
+        <style>{cardStyles}</style>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
             {features.map((feature, index) => (
-              <div 
+              <motion.div
                 key={index}
-                className={`text-center p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 hover:shadow-xl transform hover:-translate-y-2 transition-all duration-500 ${isVisible ? 'animate-fade-in-up' : ''}`}
-                style={{ animationDelay: `${index * 200}ms` }}
+                className="feature-uiverse-card shadow-xl"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.7, delay: index * 0.18 }}
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full mb-6">
-                  <feature.icon className="text-2xl" />
+                {/* Icon (SVG) */}
+                <feature.icon />
+                {/* Card Content */}
+                <div className="feature-uiverse-card__content">
+                  <p className="feature-uiverse-card__title">{feature.title}</p>
+                  <p className="feature-uiverse-card__description">{feature.description}</p>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Contact Information & Form */}
-      <section className="py-20">
+      <motion.section
+        className="py-20"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.18,
+            },
+          },
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             
             {/* Contact Information */}
-            <div className="space-y-8">
-              <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>
+            <motion.div className="space-y-8" initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8 }}>
+              <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, delay: 0.1 }}>
                 <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-6">
                   Get in Touch
                 </h2>
@@ -322,14 +439,17 @@ const ContactUs = () => {
                   Ready to start your real estate journey? Our expert team is here to provide personalized solutions 
                   for all your property needs. Reach out to us through any of the channels below.
                 </p>
-              </div>
+              </motion.div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {contactInfo.map((item, index) => (
-                  <div 
+                  <motion.div
                     key={index}
-                    className={`group p-6 bg-white rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 transition-all duration-500 transform hover:-translate-y-2 ${isVisible ? 'animate-fade-in-up' : ''}`}
-                    style={{ animationDelay: `${(index + 3) * 200}ms` }}
+                    className="group p-6 bg-white rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 transition-all duration-500 transform hover:-translate-y-2"
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.7, delay: (index + 1) * 0.18 }}
                   >
                     <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${item.color} text-white rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
                       <item.icon className="text-xl" />
@@ -340,12 +460,12 @@ const ContactUs = () => {
                         <p key={detailIndex} className="text-gray-600 text-sm">{detail}</p>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
               {/* Testimonial */}
-              <div className={`bg-gradient-to-r from-blue-500 to-blue-600 text-white p-8 rounded-2xl transform transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`} style={{ animationDelay: '1400ms' }}>
+              <motion.div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-8 rounded-2xl" initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, delay: 0.5 }}>
                 <FaQuoteLeft className="text-3xl text-blue-200 mb-4" />
                 <p className="text-lg mb-4 italic">
                   "Lunaris Management transformed our property investment experience. Their professional approach and attention to detail is unmatched."
@@ -359,10 +479,10 @@ const ContactUs = () => {
                     <p className="text-blue-200 text-sm">Property Investor</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Social Media */}
-              <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`} style={{ animationDelay: '1600ms' }}>
+              <motion.div className="" initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, delay: 0.7 }}>
                 <h3 className="text-xl font-bold text-gray-900 mb-6">Connect With Us</h3>
                 <div className="flex space-x-4">
                   {[
@@ -379,11 +499,11 @@ const ContactUs = () => {
                     </a>
                   ))}
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Contact Form */}
-            <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`} style={{ animationDelay: '800ms' }}>
+            <motion.div className="" initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, delay: 0.3 }}>
               <div className="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
@@ -513,13 +633,19 @@ const ContactUs = () => {
                   </button>
                 </form>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </section>
+  </motion.section>
 
       {/* Call to Action */}
-      <section className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white py-20 relative overflow-hidden">
+      <motion.section
+        className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white py-20 relative overflow-hidden"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8 }}
+      >
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="relative max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
@@ -548,7 +674,7 @@ const ContactUs = () => {
             </a>
           </div>
         </div>
-      </section>
+  </motion.section>
 
       <Footer />
     </div>

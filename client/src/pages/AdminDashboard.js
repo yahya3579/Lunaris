@@ -6,7 +6,7 @@ import { checkAuth, logOut } from '../store/slices/authSlice';
 import { addProperty } from '../services/propertyService';
 import { fetchProperties } from '../store/slices/propertySlice';
 import { Link } from 'react-router-dom';
-import { FaPlus, FaEdit, FaTrash, FaEye, FaImage, FaStar, FaMapMarkerAlt, FaHome, FaBed, FaBath, FaUsers, FaWifi, FaCar, FaSwimmingPool, FaUtensils, FaTv, FaSnowflake, FaLeaf, FaWater, FaVideo, FaBicycle, FaDumbbell, FaShieldAlt, FaTimes, FaKey, FaHandSparkles, FaCalendarTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaEye, FaImage, FaStar, FaMapMarkerAlt, FaHome, FaBed, FaBath, FaUsers, FaWifi, FaCar, FaSwimmingPool, FaUtensils, FaTv, FaSnowflake, FaLeaf, FaWater, FaVideo, FaBicycle, FaDumbbell, FaShieldAlt, FaTimes, FaKey, FaHandSparkles, FaCalendarTimes, FaChevronLeft, FaChevronRight, FaBook, FaCoffee, FaLaptop, FaTable, FaSuitcase, FaCouch, FaFireExtinguisher, FaFirstAid, FaTshirt, FaFire, FaShower, FaArrowUp, FaCalendarAlt, FaPlug, FaChair, FaDoorOpen, FaBell, FaMusic } from 'react-icons/fa';
 import lunarisLogo from '../assets/images/Lunaris-management-logo.png';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
@@ -208,9 +208,10 @@ const AdminDashboard = () => {
   const [customFeatureIcon, setCustomFeatureIcon] = useState('FaPlus');
 
   // Icon options for dropdown
-  const iconOptions = [
-    'FaPlus', 'FaEdit', 'FaTrash', 'FaEye', 'FaImage', 'FaStar', 'FaMapMarkerAlt', 'FaHome', 'FaBed', 'FaBath', 'FaUsers', 'FaWifi', 'FaCar', 'FaSwimmingPool', 'FaUtensils', 'FaTv', 'FaSnowflake', 'FaLeaf', 'FaWater', 'FaVideo', 'FaBicycle', 'FaDumbbell', 'FaShieldAlt', 'FaTimes', 'FaKey', 'FaHandSparkles', 'FaCalendarTimes', 'FaChevronLeft', 'FaChevronRight'
-  ];
+  const iconMap = {
+    FaPlus, FaEdit, FaTrash, FaEye, FaImage, FaStar, FaMapMarkerAlt, FaHome, FaBed, FaBath, FaUsers, FaWifi, FaCar, FaSwimmingPool, FaUtensils, FaTv, FaSnowflake, FaLeaf, FaWater, FaVideo, FaBicycle, FaDumbbell, FaShieldAlt, FaTimes, FaKey, FaHandSparkles, FaCalendarTimes, FaChevronLeft, FaChevronRight, FaBook, FaCoffee, FaLaptop, FaTable, FaSuitcase, FaCouch, FaFireExtinguisher, FaFirstAid, FaTshirt, FaFire, FaShower, FaArrowUp, FaCalendarAlt, FaPlug, FaChair, FaDoorOpen, FaBell, FaMusic
+  };
+  const iconOptions = Object.keys(iconMap);
   
   // Review form state
   const [reviewForm, setReviewForm] = useState({
@@ -226,26 +227,55 @@ const AdminDashboard = () => {
   { icon: 'FaHome', name: 'Entire home', description: "You'll have the apartment to yourself", id: 'entire_home' },
   { icon: 'FaHandSparkles', name: 'Enhanced Clean', description: "This Host committed to Airbnb's 5-step enhanced cleaning process", id: 'enhanced_clean' },
   { icon: 'FaKey', name: 'Self check-in', description: 'Check yourself in with the keypad', id: 'self_checkin' },
-  { icon: 'FaCalendarTimes', name: 'Free cancellation', description: 'Flexible cancellation policy', id: 'free_cancellation' }
+  { icon: 'FaCalendarTimes', name: 'Free cancellation', description: 'Flexible cancellation policy', id: 'free_cancellation' },
+  { icon: 'FaUsers', name: 'Checkin by staff', description: 'Staff will assist you during check-in', id: 'checkin_by_staff' },
+  { icon: 'FaCalendarAlt', name: 'Available during stay', description: 'Staff available for assistance during your stay', id: 'available_during_stay' }
   ];
 
   const availableAmenities = [
-  { icon: 'FaWifi', name: 'WiFi', id: 'wifi' },
-  { icon: 'FaCar', name: 'Free parking', id: 'parking' },
-  { icon: 'FaSwimmingPool', name: 'Pool', id: 'pool' },
-  { icon: 'FaUtensils', name: 'Kitchen', id: 'kitchen' },
-  { icon: 'FaTv', name: 'TV', id: 'tv' },
-  { icon: 'FaSnowflake', name: 'Air conditioning', id: 'ac' },
-  { icon: 'FaLeaf', name: 'Garden view', id: 'garden' },
-  { icon: 'FaWater', name: 'Free washer - in building', id: 'washer' },
-  { icon: 'FaUtensils', name: 'Refrigerator', id: 'refrigerator' },
-  { icon: 'FaVideo', name: 'Dryer', id: 'dryer' },
-  { icon: 'FaShieldAlt', name: 'Security cameras on property', id: 'security' },
-  { icon: 'FaBicycle', name: 'Bicycles', id: 'bicycles' },
-  { icon: 'FaUsers', name: 'Pets allowed', id: 'pets' },
-  { icon: 'FaDumbbell', name: 'Gym/Fitness center', id: 'gym' },
-  { icon: 'FaWifi', name: 'High-speed internet', id: 'highspeed_wifi' },
-  { icon: 'FaCar', name: 'Garage parking', id: 'garage' }
+    { icon: 'FaSnowflake', name: 'Air conditioning', id: 'ac' },
+    { icon: 'FaBath', name: 'Bath', id: 'bath' },
+    { icon: 'FaBed', name: 'Bed linen', id: 'bed_linen' },
+    { icon: 'FaBook', name: 'Books & reading material', id: 'books' },
+    { icon: 'FaCoffee', name: 'Coffee', id: 'coffee' },
+    { icon: 'FaUtensils', name: 'Cooking basics', id: 'cooking_basics' },
+    { icon: 'FaLaptop', name: 'Dedicated workspace', id: 'workspace' },
+    { icon: 'FaTable', name: 'Dining table', id: 'dining_table' },
+    { icon: 'FaSuitcase', name: 'Essentials', id: 'essentials' },
+    { icon: 'FaCouch', name: 'Extra pillows & blankets', id: 'extra_pillows_blankets' },
+    { icon: 'FaFireExtinguisher', name: 'Fire extinguisher', id: 'fire_extinguisher' },
+    { icon: 'FaFirstAid', name: 'First aid kit', id: 'first_aid_kit' },
+    { icon: 'FaCar', name: 'Free parking on premises', id: 'parking' },
+    { icon: 'FaLeaf', name: 'Garden', id: 'garden' },
+    { icon: 'FaTshirt', name: 'Hangers', id: 'hangers' },
+    { icon: 'FaFire', name: 'Heating', id: 'heating' },
+    { icon: 'FaShower', name: 'Hot water', id: 'hot_water' },
+    { icon: 'FaUtensils', name: 'Kitchen', id: 'kitchen' },
+    { icon: 'FaUtensils', name: 'Kitchenette', id: 'kitchenette' },
+    { icon: 'FaTshirt', name: 'Launderette nearby', id: 'launderette' },
+    { icon: 'FaArrowUp', name: 'Lift', id: 'lift' },
+    { icon: 'FaCalendarAlt', name: 'Long-term stays allowed', id: 'longterm_stays' },
+    { icon: 'FaPlug', name: 'Microwave', id: 'microwave' },
+    { icon: 'FaChair', name: 'Outdoor furniture', id: 'outdoor_furniture' },
+    { icon: 'FaUtensils', name: 'Outdoor dining area', id: 'outdoor_dining' },
+    // { icon: 'FaUmbrellaBeach', name: 'Balcony', id: 'balcony' }, // Not in react-icons/fa
+    { icon: 'FaDoorOpen', name: 'Private entrance', id: 'private_entrance' },
+    { icon: 'FaCouch', name: 'Private living room', id: 'private_living_room' },
+    // { icon: 'FaWindowMaximize', name: 'Room-darkening blinds', id: 'room_darkening_blinds' }, // Not in react-icons/fa
+    { icon: 'FaBell', name: 'Smoke alarm', id: 'smoke_alarm' },
+    { icon: 'FaMusic', name: 'Sound system', id: 'sound_system' },
+    { icon: 'FaTv', name: 'TV', id: 'tv' },
+    { icon: 'FaWifi', name: 'Wi-Fi', id: 'wifi' },
+    { icon: 'FaSwimmingPool', name: 'Pool', id: 'pool' },
+    { icon: 'FaWater', name: 'Free washer - in building', id: 'washer' },
+    { icon: 'FaUtensils', name: 'Refrigerator', id: 'refrigerator' },
+    { icon: 'FaVideo', name: 'Dryer', id: 'dryer' },
+    { icon: 'FaShieldAlt', name: 'Security cameras on property', id: 'security' },
+    { icon: 'FaBicycle', name: 'Bicycles', id: 'bicycles' },
+    { icon: 'FaUsers', name: 'Pets allowed', id: 'pets' },
+    { icon: 'FaDumbbell', name: 'Gym/Fitness center', id: 'gym' },
+    { icon: 'FaWifi', name: 'High-speed internet', id: 'highspeed_wifi' },
+    { icon: 'FaCar', name: 'Garage parking', id: 'garage' }
   ];
 
   const handleInputChange = (e) => {
@@ -1181,7 +1211,7 @@ const AdminDashboard = () => {
                               </div>
                               <div className="grid grid-cols-5 gap-3 max-h-64 overflow-y-auto">
                                 {iconOptions.map(iconName => {
-                                  const IconComp = require('react-icons/fa')[iconName];
+                                  const IconComp = iconMap[iconName];
                                   return (
                                     <button
                                       type="button"
@@ -1316,7 +1346,7 @@ const AdminDashboard = () => {
                             </div>
                             <div className="grid grid-cols-5 gap-3 max-h-64 overflow-y-auto">
                               {iconOptions.map(iconName => {
-                                const IconComp = require('react-icons/fa')[iconName];
+                                const IconComp = iconMap[iconName];
                                 return (
                                   <button
                                     type="button"

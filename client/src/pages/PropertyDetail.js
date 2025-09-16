@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPropertyById } from '../store/slices/propertySlice';
 import { FaStar, FaChevronLeft, FaChevronRight, FaWifi, FaCar, FaSwimmingPool, FaUtensils, FaTv, FaSnowflake, FaHeart, FaShare, FaMapMarkerAlt } from 'react-icons/fa';
 import lunarisLogo from '../assets/images/Lunaris-management-logo.png';
+import lunarisColorfulLogo from '../assets/lunaris-logo.png';
 import Footer from '../components/Footer';
 
 const PropertyDetail = () => {
@@ -19,11 +20,15 @@ const PropertyDetail = () => {
     checkOut: '',
     guests: 1
   });
+
   useEffect(() => {
     if (id) {
       dispatch(fetchPropertyById(id));
     }
   }, [id, dispatch]);
+
+  // State for amenities see more
+  const [showAllAmenities, setShowAllAmenities] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -348,14 +353,33 @@ const PropertyDetail = () => {
             {/* Property Info */}
             <div className="border-b border-gray-200 pb-8">
               <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900">{propertyData.title || propertyData.name}</h2>
-                    <p className="text-gray-600">
-                      {propertyData.details && propertyData.details.maxGuests ? propertyData.details.maxGuests : '-'} guests • {propertyData.details && propertyData.details.bedrooms ? propertyData.details.bedrooms : '-'} bedrooms • {propertyData.details && propertyData.details.bathrooms ? propertyData.details.bathrooms : '-'} bathrooms
-                    </p>
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex flex-col sm:flex-row w-full items-start sm:items-center justify-between gap-3">
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-900">{propertyData.title || propertyData.name}</h2>
+                        <p className="text-gray-600">
+                          {propertyData.details && propertyData.details.maxGuests ? propertyData.details.maxGuests : '-'} guests • {propertyData.details && propertyData.details.bedrooms ? propertyData.details.bedrooms : '-'} bedrooms • {propertyData.details && propertyData.details.bathrooms ? propertyData.details.bathrooms : '-'} bathrooms
+                        </p>
+                      </div>
+                      <a
+                        href={`https://wa.me/923199911931?text=${encodeURIComponent(`Hello! I want to contact regarding the property "${propertyData.title || propertyData.name}" for details or booking.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow transition-colors sm:ml-4 w-full sm:w-auto justify-center"
+                        style={{ whiteSpace: 'nowrap' }}
+                      >
+                        <FaIcons.FaWhatsapp className="w-5 h-5" />
+                        <span>Contact for details/booking</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               
+              {/* Hosted by Lunaris Management */}
+              <div className="border-t border-b border-gray-200 py:4 sm:py-6 mb-8 flex items-center gap-3">
+                <img src={lunarisColorfulLogo} alt="Lunaris Management" className="h-6 w-auto ml-2" />
+                <span className="font-medium text-gray-900">Hosted by Lunaris Management</span>
+              </div>
               {/* Property Features from DB */}
               <div className="space-y-6 my-8">
                 {Array.isArray(propertyData.features) && propertyData.features.map((feature, idx) => {
@@ -379,17 +403,35 @@ const PropertyDetail = () => {
 
             {/* What this place offers */}
             <div className="border-b border-gray-200 pb-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Amenities</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-6">What this place offers</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {Array.isArray(propertyData.amenities) && propertyData.amenities.map((amenity, index) => {
-                  const IconComp = amenity.icon && FaIcons[amenity.icon] ? FaIcons[amenity.icon] : FaIcons.FaPlus;
+                {(() => {
+                  const amenities = Array.isArray(propertyData.amenities) ? propertyData.amenities : [];
+                  const visibleAmenities = showAllAmenities ? amenities : amenities.slice(0, 6);
                   return (
-                    <div key={amenity._id || index} className="flex items-center space-x-3">
-                      <IconComp className="w-5 h-5 text-gray-600" />
-                      <span className="text-gray-700">{amenity.name}</span>
-                    </div>
+                    <>
+                      {visibleAmenities.map((amenity, index) => {
+                        const IconComp = amenity.icon && FaIcons[amenity.icon] ? FaIcons[amenity.icon] : FaIcons.FaPlus;
+                        return (
+                          <div key={amenity._id || index} className="flex items-center space-x-3">
+                            <IconComp className="w-5 h-5 text-gray-600" />
+                            <span className="text-gray-700">{amenity.name}</span>
+                          </div>
+                        );
+                      })}
+                      {amenities.length > 6 && !showAllAmenities && (
+                        <div className="col-span-full flex justify-center mt-4">
+                          <button
+                            className="px-4 py-1.5 bg-blue-100 border border-black text-black font-bold rounded-lg hover:bg-blue-200 transition-all text-base"
+                            onClick={() => setShowAllAmenities(true)}
+                          >
+                            {`Show all ${amenities.length - 6} amenities`}
+                          </button>
+                        </div>
+                      )}
+                    </>
                   );
-                })}
+                })()}
               </div>
             </div>
 

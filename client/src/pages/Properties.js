@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchProperties } from '../store/slices/propertySlice';
 import { Link } from 'react-router-dom';
@@ -211,7 +212,13 @@ const Properties = () => {
       </nav>
 
       {/* Page Header with Curvy/Wavy Background Design */}
-      <div className="relative py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden" style={{backgroundColor: '#121b2d'}}>
+      <motion.div
+        className="relative py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden"
+        style={{backgroundColor: '#121b2d'}}
+        initial={{ opacity: 0, y: -40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
         {/* Animated Wavy Background Effects */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Primary Wave */}
@@ -283,14 +290,19 @@ const Properties = () => {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <motion.div
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6" style={{fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.05em'}}>
             PROPERTIES
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-xs sm:max-w-lg md:max-w-2xl mx-auto leading-relaxed px-4">
             Discover your perfect property with our curated selection of premium accommodations
           </p>
-        </div>
+        </motion.div>
 
         {/* Bottom Curvy/Wavy Border */}
         <div className="absolute bottom-0 left-0 w-full overflow-hidden">
@@ -325,10 +337,16 @@ const Properties = () => {
             />
           </svg>
         </div>
-      </div>
+  </motion.div>
 
       {/* Search Filters - Location and Guests only */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+        <motion.div
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center rounded-2xl sm:rounded-full shadow-md border border-gray-200 overflow-hidden" style={{background: 'linear-gradient(135deg, #C3DFED 0%, #E7EDEF 100%)'}}>
             {/* Location */}
             <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4 border-b sm:border-b-0 sm:border-r border-gray-200">
@@ -370,31 +388,69 @@ const Properties = () => {
               </button>
             </div>
           </div>
-        </div>
+  </motion.div>
 
       {/* Properties Grid - Matching the exact layout from image */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+      <motion.div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.12,
+            },
+          },
+        }}
+      >
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.08,
+              },
+            },
+          }}
+        >
           {loading ? (
             <div className="text-center col-span-4 py-8">Loading properties...</div>
           ) : filteredProperties.length === 0 ? (
             <div className="text-center col-span-4 py-8">No properties found.</div>
-          ) : filteredProperties.map((property) => {
+          ) : filteredProperties.map((property, idx) => {
             const currentIndex = currentImageIndex[property._id] || 0;
             return (
-              <div key={property._id} className="group">
+              <motion.div
+                key={property._id}
+                className="group"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.7, delay: idx * 0.08 }}
+              >
                 {/* Property Image Slider */}
-                <div className="relative overflow-hidden rounded-xl mb-3">
-                  <img
+                <motion.div
+                  className="relative overflow-hidden rounded-xl mb-3"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+                >
+                  <motion.img
                     src={property.images && property.images.length > 0
                       ? (property.images[currentIndex].startsWith('http')
                           ? property.images[currentIndex]
                           : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/public/images/properties/${property.images[currentIndex]}`)
                       : '/default-property.jpg'}
                     alt={property.title}
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-64 object-cover"
+                    initial={{ scale: 1, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.7, delay: 0.2 }}
                   />
-                  
                   {/* Navigation Arrows */}
                   {property.images.length > 1 && (
                     <>
@@ -407,7 +463,6 @@ const Properties = () => {
                       >
                         <FaChevronLeft className="w-3 h-3 text-gray-800" />
                       </button>
-                      
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -419,8 +474,6 @@ const Properties = () => {
                       </button>
                     </>
                   )}
-                  
-                  
                   {/* Image Dots Indicator */}
                   {property.images.length > 1 && (
                     <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-1 z-10">
@@ -440,8 +493,7 @@ const Properties = () => {
                       ))}
                     </div>
                   )}
-                </div>
-
+                </motion.div>
                 {/* Property Details */}
                 <Link to={`/property/${property._id}`}>
                   <div className="space-y-1 px-2 py-2 md:px-0 md:py-0">
@@ -449,7 +501,6 @@ const Properties = () => {
                     <h2 className="font-bold text-gray-900 text-base mb-2">
                       {property.title}
                     </h2>
-                    
                     {/* Location and Rating */}
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-gray-900 text-sm">
@@ -467,18 +518,17 @@ const Properties = () => {
                         </span>
                       </div>
                     </div>
-
                     {/* Distance */}
                     <p className="text-sm text-gray-600">
                       {property.distance}
                     </p>
                   </div>
                 </Link>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Footer Component */}
       <Footer />

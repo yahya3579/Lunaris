@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import lunarisLogo from '../assets/images/Lunaris-management-logo.png';
 import aboutUsImg from '../assets/images/about3.jpg';
@@ -16,14 +17,25 @@ const About = () => {
     setIsMobileMenuOpen(false);
   };
 
+  // Parallax effect for hero
+  const heroRef = useRef(null);
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 400], [0, 100]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section with Background */}
-      <div 
+      <motion.div
+        ref={heroRef}
         className="relative bg-cover bg-center bg-no-repeat h-96"
         style={{
           backgroundImage: `url(${landingBgJpeg})`,
+          y,
         }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1 }}
       >
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/50"></div>
@@ -97,25 +109,49 @@ const About = () => {
 
         {/* Hero Content */}
         <div className="relative z-10 flex items-center justify-center h-full px-4 sm:px-6">
-          <div className="text-center text-white">
+          <motion.div
+            className="text-center text-white"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               About <span style={{ color: '#CBE9FF' }}>Lunaris</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl opacity-90 max-w-2xl mx-auto px-4">
               Transforming Property Management with Excellence
             </p>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Main Content */}
       <div className="pt-16">
         {/* About Us Section */}
-        <section className="py-12 sm:py-16 bg-white">
+        <motion.section
+          className="py-12 sm:py-16 bg-white"
+          initial={{ opacity: 0, x: -60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+        >
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
               {/* Left Content */}
-              <div className="space-y-6">
+              <motion.div
+                className="space-y-6"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={{
+                  hidden: {},
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.2,
+                    },
+                  },
+                }}
+              >
                 <div className="flex items-center mb-6 sm:mb-8 w-full">
                   {/* Left Arrow */}
                   <svg width="24" height="10" viewBox="0 0 32 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 sm:w-8 sm:h-3">
@@ -128,23 +164,41 @@ const About = () => {
                   <div className="flex-1 ml-2 h-0.5 rounded-full" style={{minWidth: '32px', background: '#CBE9FF'}}></div>
                 </div>
                 
-                <div className="space-y-4">
-                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                <motion.div
+                  className="space-y-4"
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+                  }}
+                >
+                  <motion.p className="text-gray-600 text-sm sm:text-base leading-relaxed"
+                    variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.7 } } }}
+                  >
                     At Lunaris, we understand that your property is more than just an asset it's an investment that deserves expert care and proven results. We transform short-term rental management into a seamless, reliable, and scalable system, where owners gain confidence, guests enjoy exceptional experiences, and properties perform at their highest potential.
-                  </p>
+                  </motion.p>
                   
-                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                  <motion.p className="text-gray-600 text-sm sm:text-base leading-relaxed"
+                    variants={{ hidden: { opacity: 0, x: 30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.7, delay: 0.2 } } }}
+                  >
                     Our commitment is simple: We protect your property, elevate your returns, and build partnerships based on trust and transparency.
-                  </p>
+                  </motion.p>
                   
-                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                  <motion.p className="text-gray-600 text-sm sm:text-base leading-relaxed"
+                    variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.4 } } }}
+                  >
                     Lunaris provides comprehensive management solutions that take the pressure off owners and deliver measurable results. From precise pricing strategies and professional upkeep to world-class guest communication, our services are designed to be effortless for owners, exceptional for guests, and profitable for investors.
-                  </p>
-                </div>
-              </div>
+                  </motion.p>
+                </motion.div>
+              </motion.div>
               
               {/* Right Content - Interior Image */}
-              <div className="flex justify-center items-center mt-8 lg:mt-0">
+              <motion.div
+                className="flex justify-center items-center mt-8 lg:mt-0"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
                 <div className="rounded-xl overflow-hidden shadow-lg border border-gray-100 aspect-[4/3] w-full max-w-lg bg-white">
                   <img
                     src={aboutUsImg}
@@ -152,13 +206,19 @@ const About = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
-        </section>
+  </motion.section>
 
         {/* Our Mission Section */}
-        <section className="py-16 sm:py-20 relative overflow-hidden bg-gradient-to-br from-[#192937] via-blue-800 to-[#192937]">
+        <motion.section
+          className="py-16 sm:py-20 relative overflow-hidden bg-gradient-to-br from-[#192937] via-blue-800 to-[#192937]"
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+        >
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-20 left-10 w-16 h-16 sm:w-32 sm:h-32 border border-white rounded-full"></div>
@@ -184,92 +244,140 @@ const About = () => {
               </p>
             </div>
             
-            {/* Mission Cards - New Design */}
+            {/* Mission Cards - Flip Card Design */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {/* Mission Card 1 - Excellence */}
-              <div className="group relative">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 h-full">
-                  <div className="relative">
-                    {/* Floating Icon */}
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#CBE9FF] to-blue-300 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[#192937]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
+              {/* Excellence Card */}
+              <div className="mission-flip-container">
+                <div className="mission-flip-card">
+                  <div className="mission-flip-front">
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#CBE9FF] to-blue-300 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto shadow-lg">
+                        <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[#192937]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <h3 className="front-heading text-white font-bold text-xl sm:text-2xl mb-2">Excellence</h3>
+                      <div className="w-12 sm:w-16 h-1 bg-[#CBE9FF] mx-auto mb-2 rounded-full"></div>
+                      <p className="text-blue-100 leading-relaxed text-sm sm:text-base text-center">We strive for excellence in every aspect of property management, ensuring the highest standards of service for our clients and their guests through meticulous attention to detail.</p>
                     </div>
-                    
-                    {/* Content */}
-                    <div className="text-center">
-                      <h3 className="text-white font-bold text-xl sm:text-2xl mb-4 group-hover:text-[#CBE9FF] transition-colors">
-                        Excellence
-                      </h3>
-                      <div className="w-12 sm:w-16 h-1 bg-[#CBE9FF] mx-auto mb-4 sm:mb-6 rounded-full"></div>
-                      <p className="text-blue-100 leading-relaxed text-sm sm:text-base">
-                        We strive for excellence in every aspect of property management, ensuring the highest standards of service for our clients and their guests through meticulous attention to detail.
-                      </p>
+                  </div>
+                  <div className="mission-flip-back">
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <h3 className="back-heading text-white font-bold text-xl sm:text-2xl mb-2">Excellence</h3>
+                      <div className="w-12 sm:w-16 h-1 bg-[#CBE9FF] mx-auto mb-2 rounded-full"></div>
+                      <p className="text-blue-100 leading-relaxed text-sm sm:text-base text-center">Meticulous attention to detail and a passion for quality drive us to deliver the best for every property and guest.</p>
                     </div>
-                    
-                    {/* Hover Effect Border */}
-                    <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[#CBE9FF] transition-colors duration-300"></div>
                   </div>
                 </div>
               </div>
-
-              {/* Mission Card 2 - Trust */}
-              <div className="group relative">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 h-full">
-                  <div className="relative">
-                    {/* Floating Icon */}
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#CBE9FF] to-blue-300 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[#192937]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                      </svg>
+              {/* Trust Card */}
+              <div className="mission-flip-container">
+                <div className="mission-flip-card">
+                  <div className="mission-flip-front">
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#CBE9FF] to-blue-300 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto shadow-lg">
+                        <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[#192937]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                      </div>
+                      <h3 className="front-heading text-white font-bold text-xl sm:text-2xl mb-2">Trust</h3>
+                      <div className="w-12 sm:w-16 h-1 bg-[#CBE9FF] mx-auto mb-2 rounded-full"></div>
+                      <p className="text-blue-100 leading-relaxed text-sm sm:text-base text-center">Building lasting relationships through transparency, reliability, and consistent communication with property owners and guests alike.</p>
                     </div>
-                    
-                    {/* Content */}
-                    <div className="text-center">
-                      <h3 className="text-white font-bold text-xl sm:text-2xl mb-4 group-hover:text-[#CBE9FF] transition-colors">
-                        Trust
-                      </h3>
-                      <div className="w-12 sm:w-16 h-1 bg-[#CBE9FF] mx-auto mb-4 sm:mb-6 rounded-full"></div>
-                      <p className="text-blue-100 leading-relaxed text-sm sm:text-base">
-                        Building lasting relationships through transparency, reliability, and consistent communication with property owners and guests alike, creating a foundation of mutual respect and confidence.
-                      </p>
+                  </div>
+                  <div className="mission-flip-back">
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <h3 className="back-heading text-white font-bold text-xl sm:text-2xl mb-2">Trust</h3>
+                      <div className="w-12 sm:w-16 h-1 bg-[#CBE9FF] mx-auto mb-2 rounded-full"></div>
+                      <p className="text-blue-100 leading-relaxed text-sm sm:text-base text-center">Mutual respect and confidence are at the heart of our partnerships with owners and guests.</p>
                     </div>
-                    
-                    {/* Hover Effect Border */}
-                    <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[#CBE9FF] transition-colors duration-300"></div>
                   </div>
                 </div>
               </div>
-
-              {/* Mission Card 3 - Innovation */}
-              <div className="group relative md:col-span-2 lg:col-span-1">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 h-full">
-                  <div className="relative">
-                    {/* Floating Icon */}
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#CBE9FF] to-blue-300 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[#192937]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
+              {/* Innovation Card */}
+              <div className="mission-flip-container">
+                <div className="mission-flip-card">
+                  <div className="mission-flip-front">
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#CBE9FF] to-blue-300 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 mx-auto shadow-lg">
+                        <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[#192937]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                      </div>
+                      <h3 className="front-heading text-white font-bold text-xl sm:text-2xl mb-2">Innovation</h3>
+                      <div className="w-12 sm:w-16 h-1 bg-[#CBE9FF] mx-auto mb-2 rounded-full"></div>
+                      <p className="text-blue-100 leading-relaxed text-sm sm:text-base text-center">Leveraging cutting-edge technology and strategies to maximize property performance and guest satisfaction.</p>
                     </div>
-                    
-                    {/* Content */}
-                    <div className="text-center">
-                      <h3 className="text-white font-bold text-xl sm:text-2xl mb-4 group-hover:text-[#CBE9FF] transition-colors">
-                        Innovation
-                      </h3>
-                      <div className="w-12 sm:w-16 h-1 bg-[#CBE9FF] mx-auto mb-4 sm:mb-6 rounded-full"></div>
-                      <p className="text-blue-100 leading-relaxed text-sm sm:text-base">
-                        Leveraging cutting-edge technology and innovative strategies to maximize property performance and guest satisfaction, staying ahead of industry trends and market demands.
-                      </p>
+                  </div>
+                  <div className="mission-flip-back">
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <h3 className="back-heading text-white font-bold text-xl sm:text-2xl mb-2">Innovation</h3>
+                      <div className="w-12 sm:w-16 h-1 bg-[#CBE9FF] mx-auto mb-2 rounded-full"></div>
+                      <p className="text-blue-100 leading-relaxed text-sm sm:text-base text-center">We stay ahead of industry trends to deliver measurable results for owners and memorable stays for guests.</p>
                     </div>
-                    
-                    {/* Hover Effect Border */}
-                    <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[#CBE9FF] transition-colors duration-300"></div>
                   </div>
                 </div>
               </div>
             </div>
+      {/* Flip Card CSS (scoped, themed) */}
+      <style>{`
+        .mission-flip-container {
+          width: 100%;
+          height: 340px;
+          perspective: 900px;
+          display: flex;
+          align-items: stretch;
+          justify-content: center;
+        }
+        .mission-flip-card {
+          width: 100%;
+          height: 100%;
+          position: relative;
+          transition: transform 1s cubic-bezier(.4,2,.6,1);
+          transform-style: preserve-3d;
+          border-radius: 1.5rem;
+        }
+        .mission-flip-container:hover .mission-flip-card,
+        .mission-flip-container:focus-within .mission-flip-card {
+          cursor: pointer;
+          transform: rotateY(180deg) rotateZ(180deg);
+        }
+        .mission-flip-front, .mission-flip-back {
+          width: 100%;
+          height: 100%;
+          border-radius: 1.5rem;
+          position: absolute;
+          top: 0;
+          left: 0;
+          box-shadow: 0 0 10px 2px rgba(25, 41, 55, 0.10);
+          backface-visibility: hidden;
+          background: linear-gradient(135deg, #192937 60%, #CBE9FF 100%);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          gap: 10px;
+          border: 2px solid #CBE9FF;
+        }
+        .mission-flip-front {
+          /* Subtle overlay for front */
+          background: linear-gradient(135deg, #192937 70%, #0AA4F8 100%);
+        }
+        .mission-flip-back {
+          transform: rotateY(180deg) rotateZ(180deg);
+          background: linear-gradient(135deg, #0AA4F8 60%, #CBE9FF 100%);
+        }
+        .front-heading, .back-heading {
+          font-size: 28px;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+          font-weight: bold;
+          color: #CBE9FF;
+          letter-spacing: 0.03em;
+        }
+        .mission-flip-front p, .mission-flip-back p {
+          color: #e6f4ff;
+        }
+      `}</style>
             
             {/* Bottom CTA */}
             <div className="text-center mt-12 sm:mt-16">
@@ -280,10 +388,16 @@ const About = () => {
               </div>
             </div>
           </div>
-        </section>
+  </motion.section>
 
         {/* Our Values Section */}
-        <section className="py-12 sm:py-16 bg-white">
+        <motion.section
+          className="py-12 sm:py-16 bg-white"
+          initial={{ opacity: 0, x: 60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+        >
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               {/* Left Content */}
@@ -354,10 +468,17 @@ const About = () => {
               </div>
             </div>
           </div>
-        </section>
+  </motion.section>
 
         {/* Call to Action Section */}
-        <section className="py-12 sm:py-16" style={{ backgroundColor: '#CBE9FF' }}>
+        <motion.section
+          className="py-12 sm:py-16"
+          style={{ backgroundColor: '#CBE9FF' }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+        >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <h2 className="text-[#192937] font-bold text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-6" style={{fontFamily: 'Orbitron, sans-serif'}}>
               Ready to Transform Your Property?
@@ -382,7 +503,7 @@ const About = () => {
               </Link>
             </div>
           </div>
-        </section>
+  </motion.section>
       </div>
       
       {/* Footer */}
