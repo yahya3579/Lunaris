@@ -21,8 +21,14 @@ export const fetchProperties = async () => {
 export const addProperty = async (property) => {
   let dataToSend = property;
   let config = {};
+  // Get token from localStorage
+  const token = localStorage.getItem('token');
+  config.headers = config.headers || {};
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
   if (property instanceof FormData) {
-    config.headers = { 'Content-Type': 'multipart/form-data' };
+    config.headers['Content-Type'] = 'multipart/form-data';
   }
   config.withCredentials = true;
   const res = await axios.post(API_URL, dataToSend, config);
@@ -33,9 +39,15 @@ export const addProperty = async (property) => {
 export const editProperty = async (id, property) => {
   let dataToSend = property;
   let config = {};
+  // Get token from localStorage
+  const token = localStorage.getItem('token');
+  config.headers = config.headers || {};
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
   // If property is FormData, send as multipart
   if (property instanceof FormData) {
-    config.headers = { 'Content-Type': 'multipart/form-data' };
+    config.headers['Content-Type'] = 'multipart/form-data';
     config.withCredentials = true;
     const res = await axios.patch(`${API_URL}/${id}`, property, config);
     return res.data;
@@ -43,7 +55,7 @@ export const editProperty = async (id, property) => {
     // No new images: send images array as JSON string
     if (property.images && Array.isArray(property.images)) {
       dataToSend = { ...property, images: property.images };
-      config.headers = { 'Content-Type': 'application/json' };
+      config.headers['Content-Type'] = 'application/json';
     }
     config.withCredentials = true;
     const res = await axios.patch(`${API_URL}/${id}`, dataToSend, config);
@@ -53,7 +65,15 @@ export const editProperty = async (id, property) => {
 
 
 export const deleteProperty = async (id) => {
-  const res = await axios.delete(`${API_URL}/${id}`, { withCredentials: true });
+  const token = localStorage.getItem('token');
+  const config = {
+    withCredentials: true,
+    headers: {}
+  };
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
+  const res = await axios.delete(`${API_URL}/${id}`, config);
   return res.data;
 };
 

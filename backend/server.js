@@ -30,7 +30,8 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 // Enable CORS for frontend
 app.use(
   cors({
-    origin: "https://lunarismanagement.com",
+    // origin: "https://lunarismanagement.com",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
