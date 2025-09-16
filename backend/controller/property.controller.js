@@ -181,17 +181,8 @@ export const createProperty = async (req, res) => {
       }
     }
 
-    let imageFilenames = [];
-    if (req.files && req.files.images) {
-      try {
-        imageFilenames = req.files.images.map((file) => file.filename);
-      } catch (err) {
-        // Ignore file system errors (e.g., EROFS)
-        imageFilenames = [];
-      }
-    }
     const newProperty = await Property.create({
-      images: imageFilenames,
+      images: req.files.images?.map((file) => file.filename) || [],
       ...propertyData,
       amenities,
       features,
@@ -256,14 +247,10 @@ export const deleteProperty = async (req, res) => {
       await Promise.all(
         reviews.map(async (review) => {
           if (review.photo) {
-            try {
-              await deleteImagePromise(
-                [__dirname, "..", "public", "images", "properties"],
-                review.photo
-              );
-            } catch (err) {
-              if (err.code !== 'EROFS') console.error('Delete review image error:', err);
-            }
+            await deleteImagePromise(
+              [__dirname, "..", "public", "images", "properties"],
+              review.photo
+            );
           }
         })
       );
@@ -274,16 +261,12 @@ export const deleteProperty = async (req, res) => {
     const photos = property?.images || [];
     if (Array.isArray(photos) && photos.length > 0) {
       await Promise.all(
-        photos.map(async (photo) => {
-          try {
-            await deleteImagePromise(
-              [__dirname, "..", "public", "images", "properties"],
-              photo
-            );
-          } catch (err) {
-            if (err.code !== 'EROFS') console.error('Delete property image error:', err);
-          }
-        })
+        photos.map((photo) =>
+          deleteImagePromise(
+            [__dirname, "..", "public", "images", "properties"],
+            photo
+          )
+        )
       );
     }
 
