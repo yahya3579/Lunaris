@@ -378,7 +378,7 @@ const PropertyDetail = () => {
               {/* Hosted by Lunaris Management */}
               <div className="border-t border-b border-gray-200 py:4 sm:py-6 mb-8 flex items-center gap-3">
                 <img src={lunarisColorfulLogo} alt="Lunaris Management" className="h-6 w-auto ml-2" />
-                <span className="font-medium text-gray-900">Hosted by Lunaris Management</span>
+                <span className="font-medium text-gray-900">Listed by Lunaris Management</span>
               </div>
               {/* Property Features from DB */}
               <div className="space-y-6 my-8">
