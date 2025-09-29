@@ -185,9 +185,12 @@ const LandingPage = () => {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.4 }}
               >
-                <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
+                <div className="mb-2">
+                  <span className="text-3xl lg:text-4xl font-semibold drop-shadow-md" style={{ color: '#cae1fe' }}>Global STR</span>
+                </div>
+                <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
                   <TextType 
-                    text={["FIND YOUR", "PLACE", "OF DREAM"]}
+                    text={["Co-Hosting Experts", "Management company"]}
                     typingSpeed={70}
                     pauseDuration={1500}
                     showCursor={true}
