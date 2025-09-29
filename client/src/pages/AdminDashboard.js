@@ -51,15 +51,8 @@ const AdminDashboard = () => {
   const handleEditImageChange = (e) => {
     const files = Array.from(e.target.files);
     const combinedImages = [...editSelectedImages, ...files];
-    if (combinedImages.length > 10) {
-      alert(`You can upload maximum 10 images. ${combinedImages.length - 10} images will not be added.`);
-      const limitedFiles = combinedImages.slice(0, 10);
-      setEditSelectedImages(limitedFiles);
-      setEditImagePreviewUrls(limitedFiles.map(file => URL.createObjectURL(file)));
-    } else {
-      setEditSelectedImages(combinedImages);
-      setEditImagePreviewUrls(combinedImages.map(file => URL.createObjectURL(file)));
-    }
+    setEditSelectedImages(combinedImages);
+    setEditImagePreviewUrls(combinedImages.map(file => URL.createObjectURL(file)));
     e.target.value = '';
   };
 
@@ -288,33 +281,14 @@ const AdminDashboard = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    
-    // Combine existing images with new ones
     const combinedImages = [...selectedImages, ...files];
-    
-    // Limit to maximum 10 images
-    if (combinedImages.length > 10) {
-      alert(`You can upload maximum 10 images. ${combinedImages.length - 10} images will not be added.`);
-      const limitedFiles = combinedImages.slice(0, 10);
-      setSelectedImages(limitedFiles);
-      
-      // Create URLs for preview
-      const imageUrls = limitedFiles.map(file => URL.createObjectURL(file));
-      setNewProperty(prev => ({
-        ...prev,
-        images: imageUrls
-      }));
-    } else {
-      setSelectedImages(combinedImages);
-      
-      // Create URLs for preview
-      const imageUrls = combinedImages.map(file => URL.createObjectURL(file));
-      setNewProperty(prev => ({
-        ...prev,
-        images: imageUrls
-      }));
-    }
-    
+    setSelectedImages(combinedImages);
+    // Create URLs for preview
+    const imageUrls = combinedImages.map(file => URL.createObjectURL(file));
+    setNewProperty(prev => ({
+      ...prev,
+      images: imageUrls
+    }));
     // Clear the input so same files can be selected again if needed
     e.target.value = '';
   };
@@ -903,16 +877,12 @@ const AdminDashboard = () => {
                 <textarea name="fullDescription" value={editProperty.fullDescription || editProperty.description || ''} onChange={handleEditInputChange} rows={4} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Property Images <span className="text-gray-500 text-xs ml-2">({editSelectedImages.length}/10 images selected)</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Property Images <span className="text-gray-500 text-xs ml-2">({editSelectedImages.length} images selected)</span></label>
                 <div className="space-y-3">
                   <div className="flex flex-col space-y-2">
-                    <input type="file" multiple accept="image/*" onChange={handleEditImageChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" disabled={editSelectedImages.length >= 10} />
+                    <input type="file" multiple accept="image/*" onChange={handleEditImageChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" />
                     <p className="text-xs text-gray-600">Select images one by one or multiple at once. Supported formats: JPG, PNG, GIF, WebP</p>
-                    {editSelectedImages.length >= 10 ? (
-                      <p className="text-xs text-orange-600 font-medium">Maximum limit reached. Remove some images to add new ones.</p>
-                    ) : (
-                      <p className="text-xs text-blue-600">You can add {10 - ((editProperty.images?.length || 0) + editSelectedImages.length)} more images.</p>
-                    )}
+                    {/* No max limit warning */}
                   </div>
                   {/* Image Preview: Show fetched images and newly selected images */}
                   {((editProperty.images && editProperty.images.length > 0) || editSelectedImages.length > 0) ? (
@@ -1079,7 +1049,7 @@ const AdminDashboard = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Property Images
                   <span className="text-gray-500 text-xs ml-2">
-                    ({selectedImages.length}/10 images selected)
+                    ({selectedImages.length} images selected)
                   </span>
                 </label>
                 <div className="space-y-3">
@@ -1095,15 +1065,6 @@ const AdminDashboard = () => {
                     <p className="text-xs text-gray-600">
                       Select images one by one or multiple at once. Supported formats: JPG, PNG, GIF, WebP
                     </p>
-                    {selectedImages.length >= 10 ? (
-                      <p className="text-xs text-orange-600 font-medium">
-                        Maximum limit reached. Remove some images to add new ones.
-                      </p>
-                    ) : (
-                      <p className="text-xs text-blue-600">
-                        You can add {10 - selectedImages.length} more images.
-                      </p>
-                    )}
                   </div>
                   
                   {/* Image Preview */}
@@ -1459,7 +1420,7 @@ const AdminDashboard = () => {
                       rows="3"
                     />
                     
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-wrap">
                       <label className="text-sm font-medium text-gray-600">Rating:</label>
                       <div className="flex items-center gap-1">
                         {[1, 2, 3, 4, 5].map((star) => (

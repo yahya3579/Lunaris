@@ -43,7 +43,7 @@ export const uploadPropertyImages = (req, res, next) => {
 
   const uploader = upload(propertyFolder).fields([
     { name: "imageCover", maxCount: 1 },
-    { name: "images", maxCount: 10 },
+    { name: "images" },
     ...reviewImageFields
   ]);
 
