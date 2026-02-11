@@ -11,7 +11,6 @@ const initialState = {
   message: "",
 };
 
-// Async thunks for auth operations
 export const signUp = createAsyncThunk(
   "auth/signUp",
   async (userData, thunkAPI) => {
@@ -19,11 +18,14 @@ export const signUp = createAsyncThunk(
       // Use adminSignup for admin registration
       return await authService.adminSignup(userData);
     } catch (error) {
+      // authService.adminSignup throws error.response.data directly
+      // Backend returns { status, message, error } where 'error' has the error text
       const message =
+        error?.error ||
+        error?.message ||
         (error.response &&
           error.response.data &&
-          error.response.data.message) ||
-        error.message ||
+          (error.response.data.error || error.response.data.message)) ||
         error.toString();
       return thunkAPI.rejectWithValue(message);
     }
@@ -96,16 +98,17 @@ export const authSlice = createSlice({
       .addCase(signUp.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload.data?.user || action.payload.user;
+        state.user = action.payload.user || action.payload.data?.user;
         state.token = action.payload.token;
-        state.message = action.payload.message;
-        state.error = null;
+        state.message = action.payload.message || 'Signup successful!';
+        if (action.payload.token) {
+          localStorage.setItem('token', action.payload.token);
+        }
       })
       .addCase(signUp.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = null;
-        state.error = action.payload?.error || action.payload;
+        state.message = action.payload || 'Signup failed!';
         state.user = null;
         state.token = null;
       })
@@ -116,17 +119,17 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload.user;
-  state.token = action.payload.token;
-          if (action.payload.token) {
-            localStorage.setItem('token', action.payload.token);
-          }
+        state.token = action.payload.token;
+        if (action.payload.token) {
+          localStorage.setItem('token', action.payload.token);
+        }
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
         state.user = null;
-  state.token = null;
+        state.token = null;
       })
       .addCase(logOut.fulfilled, (state) => {
         state.user = null;
@@ -135,7 +138,7 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.isError = false;
         state.message = "";
-    localStorage.removeItem('token');
+        localStorage.removeItem('token');
       })
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;

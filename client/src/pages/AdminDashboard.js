@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkAuth, logOut } from '../store/slices/authSlice';
+import { logOut } from '../store/slices/authSlice';
 import { addProperty } from '../services/propertyService';
 import { fetchProperties } from '../store/slices/propertySlice';
 import { Link } from 'react-router-dom';
@@ -23,7 +23,7 @@ const AdminDashboard = () => {
   const [showEditPropertyModal, setShowEditPropertyModal] = useState(false);
   const [editProperty, setEditProperty] = useState(null);
   const [editSelectedImages, setEditSelectedImages] = useState([]);
-  const [editImagePreviewUrls, setEditImagePreviewUrls] = useState([]);
+  const [editImagePreviewUrls, setEditImagePreviewUrls] = useState([]); // eslint-disable-line no-unused-vars
   const [editLoading, setEditLoading] = useState(false);
   // Edit Property Handler
   const { editProperty: editPropertyThunk } = require('../store/slices/propertySlice');
@@ -69,8 +69,8 @@ const AdminDashboard = () => {
     // If new images are uploaded, use FormData and send files
     if (editSelectedImages.length > 0) {
       formData = new FormData();
-  formData.append('title', editProperty.title || editProperty.name || '');
-  formData.append('address', editProperty.address || editProperty.location || '');
+      formData.append('title', editProperty.title || editProperty.name || '');
+      formData.append('address', editProperty.address || editProperty.location || '');
       formData.append('description', editProperty.fullDescription || editProperty.description || '');
       formData.append('details.bedrooms',
         editProperty.bedrooms !== undefined && editProperty.bedrooms !== ''
@@ -150,7 +150,7 @@ const AdminDashboard = () => {
   const [showIconPicker, setShowIconPicker] = useState(false);
   const [activeTab, setActiveTab] = useState('properties');
   const dispatch = useDispatch();
-  const { user, token, isLoading } = useSelector(state => state.auth);
+  const { user, token } = useSelector(state => state.auth);
 
   // Check authentication using Redux state
   useEffect(() => {
@@ -195,7 +195,6 @@ const AdminDashboard = () => {
 
   const [selectedImages, setSelectedImages] = useState([]);
   const [customAmenityInput, setCustomAmenityInput] = useState('');
-  const [customFeatureInput, setCustomFeatureInput] = useState('');
   const [customFeatureName, setCustomFeatureName] = useState('');
   const [customFeatureDescription, setCustomFeatureDescription] = useState('');
   const [customFeatureIcon, setCustomFeatureIcon] = useState('FaPlus');
@@ -205,7 +204,7 @@ const AdminDashboard = () => {
     FaPlus, FaEdit, FaTrash, FaEye, FaImage, FaStar, FaMapMarkerAlt, FaHome, FaBed, FaBath, FaUsers, FaWifi, FaCar, FaSwimmingPool, FaUtensils, FaTv, FaSnowflake, FaLeaf, FaWater, FaVideo, FaBicycle, FaDumbbell, FaShieldAlt, FaTimes, FaKey, FaHandSparkles, FaCalendarTimes, FaChevronLeft, FaChevronRight, FaBook, FaCoffee, FaLaptop, FaTable, FaSuitcase, FaCouch, FaFireExtinguisher, FaFirstAid, FaTshirt, FaFire, FaShower, FaArrowUp, FaCalendarAlt, FaPlug, FaChair, FaDoorOpen, FaBell, FaMusic
   };
   const iconOptions = Object.keys(iconMap);
-  
+
   // Review form state
   const [reviewForm, setReviewForm] = useState({
     username: '',
@@ -215,14 +214,14 @@ const AdminDashboard = () => {
     rating: 3,
     date: ''
   });
-  
+
   const availableFeatures = [
-  { icon: 'FaHome', name: 'Entire home', description: "You'll have the apartment to yourself", id: 'entire_home' },
-  { icon: 'FaHandSparkles', name: 'Enhanced Clean', description: "This Host committed to Airbnb's 5-step enhanced cleaning process", id: 'enhanced_clean' },
-  { icon: 'FaKey', name: 'Self check-in', description: 'Check yourself in with the keypad', id: 'self_checkin' },
-  { icon: 'FaCalendarTimes', name: 'Free cancellation', description: 'Flexible cancellation policy', id: 'free_cancellation' },
-  { icon: 'FaUsers', name: 'Checkin by staff', description: 'Staff will assist you during check-in', id: 'checkin_by_staff' },
-  { icon: 'FaCalendarAlt', name: 'Available during stay', description: 'Staff available for assistance during your stay', id: 'available_during_stay' }
+    { icon: 'FaHome', name: 'Entire home', description: "You'll have the apartment to yourself", id: 'entire_home' },
+    { icon: 'FaHandSparkles', name: 'Enhanced Clean', description: "This Host committed to Airbnb's 5-step enhanced cleaning process", id: 'enhanced_clean' },
+    { icon: 'FaKey', name: 'Self check-in', description: 'Check yourself in with the keypad', id: 'self_checkin' },
+    { icon: 'FaCalendarTimes', name: 'Free cancellation', description: 'Flexible cancellation policy', id: 'free_cancellation' },
+    { icon: 'FaUsers', name: 'Checkin by staff', description: 'Staff will assist you during check-in', id: 'checkin_by_staff' },
+    { icon: 'FaCalendarAlt', name: 'Available during stay', description: 'Staff available for assistance during your stay', id: 'available_during_stay' }
   ];
 
   const availableAmenities = [
@@ -296,7 +295,7 @@ const AdminDashboard = () => {
   const removeImage = (index) => {
     const updatedImages = selectedImages.filter((_, i) => i !== index);
     setSelectedImages(updatedImages);
-    
+
     const imageUrls = updatedImages.map(file => URL.createObjectURL(file));
     setNewProperty(prev => ({
       ...prev,
@@ -508,7 +507,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      const res = await addProperty(formData);
+      await addProperty(formData);
       // Refetch properties after adding
       await dispatch(fetchProperties());
       // Reset form
@@ -528,7 +527,6 @@ const AdminDashboard = () => {
       });
       setSelectedImages([]);
       setCustomAmenityInput('');
-      setCustomFeatureInput('');
       setCustomFeatureName('');
       setCustomFeatureDescription('');
       setReviewForm({
@@ -592,25 +590,25 @@ const AdminDashboard = () => {
   };
 
   return (
-  <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-100">
-    <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-100">
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
       {/* Navigation */}
       <nav className="border-b border-gray-200 py-2 sm:py-3 bg-gradient-to-r from-[#121b2d] via-[#1a2540] to-[#24304a] backdrop-blur-md bg-opacity-80 shadow-xl rounded-b-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center h-auto sm:h-14 gap-2 sm:gap-0">
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
               <Link to="/">
-                <img 
-                  src={lunarisLogo} 
-                  alt="Lunaris Management & Co." 
+                <img
+                  src={lunarisLogo}
+                  alt="Lunaris Management & Co."
                   className="h-10 w-24 sm:h-12 sm:w-32 lg:h-14 lg:w-36 drop-shadow-xl rounded-xl bg-white/10 p-1 cursor-pointer"
                 />
               </Link>
               <span className="text-lg sm:text-xl font-bold text-white tracking-wide drop-shadow mt-2 sm:mt-0">Admin Dashboard</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 mt-2 sm:mt-0">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="bg-white/20 hover:bg-white/30 text-white px-4 py-1.5 rounded-xl text-sm font-semibold shadow-lg transition-all border border-white/30 backdrop-blur-sm w-full sm:w-auto text-center"
               >
                 View Site
@@ -635,11 +633,10 @@ const AdminDashboard = () => {
           <nav className="-mb-px flex space-x-4 sm:space-x-8 overflow-x-auto">
             <button
               onClick={() => setActiveTab('properties')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                activeTab === 'properties'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'properties'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
             >
               Properties ({properties.length})
             </button>
@@ -728,11 +725,10 @@ const AdminDashboard = () => {
                                     e.stopPropagation();
                                     goToImage(propertyId, index);
                                   }}
-                                  className={`w-2 h-2 rounded-full transition-all ${
-                                    index === currentIndex 
-                                      ? 'bg-white' 
-                                      : 'bg-white bg-opacity-50 hover:bg-opacity-75'
-                                  }`}
+                                  className={`w-2 h-2 rounded-full transition-all ${index === currentIndex
+                                    ? 'bg-white'
+                                    : 'bg-white bg-opacity-50 hover:bg-opacity-75'
+                                    }`}
                                 />
                               ))}
                             </div>
@@ -756,7 +752,7 @@ const AdminDashboard = () => {
                       </div>
                       {/* Show only first 2 lines of description */}
                       {property.description && (
-                        <p className="text-xs text-gray-700 mb-2 line-clamp-2" style={{display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>
+                        <p className="text-xs text-gray-700 mb-2 line-clamp-2" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                           {property.description}
                         </p>
                       )}
@@ -1066,7 +1062,7 @@ const AdminDashboard = () => {
                       Select images one by one or multiple at once. Supported formats: JPG, PNG, GIF, WebP
                     </p>
                   </div>
-                  
+
                   {/* Image Preview */}
                   {selectedImages.length > 0 && (
                     <div>
@@ -1095,7 +1091,7 @@ const AdminDashboard = () => {
                       </div>
                     </div>
                   )}
-                  
+
                   {selectedImages.length === 0 && (
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                       <FaImage className="w-12 h-12 text-gray-400 mx-auto mb-2" />
@@ -1111,7 +1107,7 @@ const AdminDashboard = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Property Features
                 </label>
-                
+
                 {/* Predefined Features */}
                 <div className="mb-4">
                   <h4 className="text-sm font-medium text-gray-600 mb-2">Select key features:</h4>
@@ -1119,11 +1115,10 @@ const AdminDashboard = () => {
                     {availableFeatures.map((feature) => (
                       <label
                         key={feature.id}
-                        className={`flex items-start space-x-3 p-3 border rounded-lg cursor-pointer transition-colors ${
-                          newProperty.features.some(f => f.id === feature.id)
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-300 hover:border-gray-400'
-                        }`}
+                        className={`flex items-start space-x-3 p-3 border rounded-lg cursor-pointer transition-colors ${newProperty.features.some(f => f.id === feature.id)
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-300 hover:border-gray-400'
+                          }`}
                       >
                         <input
                           type="checkbox"
@@ -1250,7 +1245,7 @@ const AdminDashboard = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Amenities
                 </label>
-                
+
                 {/* Predefined Amenities */}
                 <div className="mb-4">
                   <h4 className="text-sm font-medium text-gray-600 mb-2">Select from available amenities:</h4>
@@ -1258,11 +1253,10 @@ const AdminDashboard = () => {
                     {availableAmenities.map((amenity) => (
                       <label
                         key={amenity.id}
-                        className={`flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 border rounded-lg cursor-pointer transition-colors ${
-                          newProperty.amenities.some(a => a.id === amenity.id)
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-300 hover:border-gray-400'
-                        }`}
+                        className={`flex items-center space-x-2 sm:space-x-3 p-2 sm:p-3 border rounded-lg cursor-pointer transition-colors ${newProperty.amenities.some(a => a.id === amenity.id)
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-300 hover:border-gray-400'
+                          }`}
                       >
                         <input
                           type="checkbox"
@@ -1345,7 +1339,7 @@ const AdminDashboard = () => {
                       </button>
                     </div>
                   </div>
-                  
+
                   {/* Display Custom Amenities */}
                   {newProperty.customAmenities.length > 0 && (
                     <div className="mt-3">
@@ -1375,7 +1369,7 @@ const AdminDashboard = () => {
                 {/* Reviews Section */}
                 <div className="border-t border-gray-200 pt-4">
                   <h4 className="text-sm font-medium text-gray-600 mb-3">Add Reviews:</h4>
-                  
+
                   <div className="space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <input
@@ -1411,7 +1405,7 @@ const AdminDashboard = () => {
                         )}
                       </div>
                     </div>
-                    
+
                     <textarea
                       value={reviewForm.review}
                       onChange={(e) => handleReviewInputChange('review', e.target.value)}
@@ -1419,7 +1413,7 @@ const AdminDashboard = () => {
                       placeholder="Review text (e.g., Amazing place to stay! Very clean and comfortable.)"
                       rows="3"
                     />
-                    
+
                     <div className="flex items-center gap-3 flex-wrap">
                       <label className="text-sm font-medium text-gray-600">Rating:</label>
                       <div className="flex items-center gap-1">
@@ -1445,7 +1439,7 @@ const AdminDashboard = () => {
                       </button>
                     </div>
                   </div>
-                  
+
                   {/* Display Added Reviews */}
                   {newProperty.reviews.length > 0 && (
                     <div className="mt-4">

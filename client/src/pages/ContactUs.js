@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import lunarisLogo from '../assets/images/Lunaris-management-logo.png';
 import { Link } from 'react-router-dom';
-import { 
-  FaPhone, 
-  FaEnvelope, 
-  FaMapMarkerAlt, 
-  FaClock, 
-  FaFacebookF, 
-  FaLinkedinIn, 
+import {
+  FaFacebookF,
+  FaLinkedinIn,
   FaInstagram,
   FaPaperPlane,
   FaCheckCircle,
@@ -39,33 +35,28 @@ const ContactUs = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
-    
+
     if (!formData.subject) {
       newErrors.subject = 'Subject is required';
     }
-    
+
     if (!formData.message.trim()) {
       newErrors.message = 'Message is required';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -76,7 +67,7 @@ const ContactUs = () => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -86,19 +77,19 @@ const ContactUs = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { // eslint-disable-line no-unused-vars
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       console.log('Form submitted:', formData);
       setIsSubmitted(true);
       setIsLoading(false);
-      
+
       // Reset form after submission
       setTimeout(() => {
         setFormData({
@@ -233,14 +224,14 @@ const ContactUs = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
-      <nav className="relative z-20 px-4 sm:px-6 lg:px-8 py-3 sm:py-4" style={{backgroundColor: '#121b2d'}}>
+      <nav className="relative z-20 px-4 sm:px-6 lg:px-8 py-3 sm:py-4" style={{ backgroundColor: '#121b2d' }}>
         <div className="flex items-center justify-between">
           {/* Logo - Using actual logo image */}
           <div className="flex items-center space-x-3">
             <Link to="/">
-              <img 
-                src={lunarisLogo} 
-                alt="Lunaris Management & Co." 
+              <img
+                src={lunarisLogo}
+                alt="Lunaris Management & Co."
                 className="h-12 w-24 sm:h-16 sm:w-32 lg:h-20 lg:w-48"
               />
             </Link>
@@ -260,8 +251,8 @@ const ContactUs = () => {
             <Link to="/contact" className="hover:text-blue-300 transition-colors font-medium">
               Contact us
             </Link>
-            <a 
-              href="https://calendly.com/lunarismanagement14/30min" 
+            <a
+              href="https://calendly.com/lunarismanagement14/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
@@ -272,7 +263,7 @@ const ContactUs = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button 
+            <button
               onClick={toggleMobileMenu}
               className="text-white p-2 relative z-50"
             >
@@ -290,40 +281,39 @@ const ContactUs = () => {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`md:hidden fixed inset-0 bg-slate-900/95 backdrop-blur-sm transition-all duration-300 z-40 ${
-          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}>
+        <div className={`md:hidden fixed inset-0 bg-slate-900/95 backdrop-blur-sm transition-all duration-300 z-40 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}>
           <div className="flex flex-col items-center justify-center h-full space-y-8 text-white text-lg">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="hover:text-blue-300 transition-colors font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Home
             </Link>
-            <Link 
-              to="/about" 
+            <Link
+              to="/about"
               className="hover:text-blue-300 transition-colors font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               About
             </Link>
-            <Link 
-              to="/properties" 
+            <Link
+              to="/properties"
               className="hover:text-blue-300 transition-colors font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Properties
             </Link>
-            <Link 
-              to="/contact" 
+            <Link
+              to="/contact"
               className="hover:text-blue-300 transition-colors font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact us
             </Link>
-            <a 
-              href="https://calendly.com/lunarismanagement14/30min" 
+            <a
+              href="https://calendly.com/lunarismanagement14/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
@@ -367,7 +357,7 @@ const ContactUs = () => {
             </div>
           </motion.div>
         </div>
-  </motion.section>
+      </motion.section>
 
       {/* Features Section */}
       {/* Features Section with Uiverse.io Card Design */}
@@ -428,7 +418,7 @@ const ContactUs = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            
+
             {/* Contact Information */}
             <motion.div className="space-y-8" initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8 }}>
               <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, delay: 0.1 }}>
@@ -436,7 +426,7 @@ const ContactUs = () => {
                   Get in Touch
                 </h2>
                 <p className="text-gray-600 text-lg leading-relaxed">
-                  Ready to start your real estate journey? Our expert team is here to provide personalized solutions 
+                  Ready to start your real estate journey? Our expert team is here to provide personalized solutions
                   for all your property needs. Reach out to us through any of the channels below.
                 </p>
               </motion.div>
@@ -490,9 +480,9 @@ const ContactUs = () => {
                     { icon: FaInstagram, color: 'from-pink-500 to-purple-600', href: 'https://www.instagram.com/lunaris_management?igsh=cXMwZnY5azNkYWE1' },
                     { icon: FaLinkedinIn, color: 'from-blue-700 to-blue-800', href: 'https://www.linkedin.com/company/lunaris-management' }
                   ].map((social, index) => (
-                    <a 
+                    <a
                       key={index}
-                      href={social.href} 
+                      href={social.href}
                       className={`group flex items-center justify-center w-12 h-12 bg-gradient-to-r ${social.color} text-white rounded-full hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl`}
                     >
                       <social.icon className="text-lg group-hover:animate-pulse" />
@@ -511,7 +501,7 @@ const ContactUs = () => {
                   </h2>
                   <p className="text-gray-600">Fill out the form below and we'll get back to you within 24 hours</p>
                 </div>
-                
+
                 {isSubmitted && (
                   <div className="mb-6 p-6 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 text-green-800 rounded-2xl flex items-center animate-fade-in">
                     <FaCheckCircle className="text-green-500 text-2xl mr-4" />
@@ -526,7 +516,7 @@ const ContactUs = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Full Name *                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                        Full Name *
                       </label>
                       <input
                         type="text"
@@ -636,7 +626,7 @@ const ContactUs = () => {
             </motion.div>
           </div>
         </div>
-  </motion.section>
+      </motion.section>
 
       {/* Call to Action */}
       <motion.section
@@ -652,19 +642,19 @@ const ContactUs = () => {
             Ready to Make Your Move?
           </h2>
           <p className="text-xl text-blue-200 mb-10 leading-relaxed">
-            Whether you're buying your first home, expanding your portfolio, or seeking expert property management, 
+            Whether you're buying your first home, expanding your portfolio, or seeking expert property management,
             we're here to turn your real estate goals into reality.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link 
-              to="/properties" 
+            <Link
+              to="/properties"
               className="group bg-white text-gray-900 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 hover:shadow-xl flex items-center justify-center"
             >
               <FaBuilding className="mr-2 group-hover:animate-pulse" />
               Explore Properties
             </Link>
             <a
-              href="https://calendly.com/lunarismanagement14/30min" 
+              href="https://calendly.com/lunarismanagement14/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="group border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105 hover:shadow-xl flex items-center justify-center"
@@ -674,7 +664,7 @@ const ContactUs = () => {
             </a>
           </div>
         </div>
-  </motion.section>
+      </motion.section>
 
       <Footer />
     </div>

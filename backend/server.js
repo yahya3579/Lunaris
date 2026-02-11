@@ -28,9 +28,21 @@ const __dirname = path.dirname(__filename);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 // Enable CORS for frontend
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://lunarismanagement.com"
+];
 app.use(
   cors({
-    origin: "https://lunarismanagement.com",
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );

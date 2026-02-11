@@ -32,14 +32,8 @@ export const createAdmin = async (req, res) => {
       });
     }
     const newAdmin = await User.create(req.body);
-    res.status(201).json({
-      status: 'success',
-      message: 'Admin account created successfully.',
-      error: null,
-      data: {
-        user: newAdmin,
-      },
-    });
+    // Generate token and set cookie so user is authenticated after signup
+    generateTokenAndSetCookie(newAdmin, res, 201);
   } catch (err) {
     res.status(400).json({
       status: 'fail',

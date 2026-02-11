@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ClientReviews = () => {
@@ -33,14 +33,6 @@ const ClientReviews = () => {
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
   }, [screenSize]);
-
-  // Autoplay effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 4000); // Change slide every 4 seconds
-    return () => clearInterval(interval);
-  }, [currentSlide, screenSize]);
 
   // Updated review data from user
   const reviews = [
@@ -140,26 +132,25 @@ const ClientReviews = () => {
   const cardsToShow = getCardsToShow();
   const maxSlide = Math.max(0, reviews.length - cardsToShow);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
-    if (currentSlide >= maxSlide) {
-      setCurrentSlide(0);
-    } else {
-      setCurrentSlide(currentSlide + 1);
-    }
-  };
+  }, [maxSlide]);
 
-  const prevSlide = () => {
-    if (currentSlide <= 0) {
-      setCurrentSlide(maxSlide);
-    } else {
-      setCurrentSlide(currentSlide - 1);
-    }
-  };
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev <= 0 ? maxSlide : prev - 1));
+  }, [maxSlide]);
 
   const goToSlide = (index) => {
     setCurrentSlide(Math.min(index, maxSlide));
   };
+
+  // Autoplay effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 4000); // Change slide every 4 seconds
+    return () => clearInterval(interval);
+  }, [currentSlide, screenSize, nextSlide]);
 
   // Function to check if card is in middle position
   const getCardPosition = (index) => {
@@ -195,16 +186,16 @@ const ClientReviews = () => {
     }
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!isDragging) return;
 
     e.preventDefault();
     setCurrentX(e.clientX);
     const offset = e.clientX - startX;
     setDragOffset(offset);
-  };
+  }, [isDragging, startX]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     if (!isDragging) return;
 
     setIsDragging(false);
@@ -227,7 +218,7 @@ const ClientReviews = () => {
     }
 
     setDragOffset(0);
-  };
+  }, [isDragging, currentX, startX, prevSlide, nextSlide]);
 
   const handleMouseLeave = () => {
     if (isDragging) {
@@ -304,9 +295,8 @@ const ClientReviews = () => {
     return [...Array(5)].map((_, i) => (
       <svg
         key={i}
-        className={`w-4 h-4 ${
-          i < rating ? "text-orange-400 fill-current" : "text-gray-300"
-        }`}
+        className={`w-4 h-4 ${i < rating ? "text-orange-400 fill-current" : "text-gray-300"
+          }`}
         viewBox="0 0 24 24"
       >
         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -376,11 +366,10 @@ const ClientReviews = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <motion.div
-              className={`flex ${
-                isDragging
-                  ? ""
-                  : "transition-transform duration-300 ease-in-out"
-              }`}
+              className={`flex ${isDragging
+                ? ""
+                : "transition-transform duration-300 ease-in-out"
+                }`}
               style={{ transform: getTransform() }}
               initial={false}
               animate={isDragging ? {} : {}}
@@ -393,13 +382,12 @@ const ClientReviews = () => {
                   return (
                     <motion.div
                       key={review.id}
-                      className={`${
-                        screenSize === "mobile"
-                          ? "w-full"
-                          : screenSize === "tablet"
+                      className={`${screenSize === "mobile"
+                        ? "w-full"
+                        : screenSize === "tablet"
                           ? "w-1/2"
                           : "w-1/3"
-                      } flex-shrink-0 px-4 ${isCenter ? "z-10" : "z-0"}`}
+                        } flex-shrink-0 px-4 ${isCenter ? "z-10" : "z-0"}`}
                       initial={{ opacity: 0, y: 40, scale: 0.95 }}
                       animate={{
                         opacity: 1,
@@ -414,11 +402,10 @@ const ClientReviews = () => {
                       }}
                     >
                       <motion.div
-                        className={`review-card bg-white rounded-lg p-6 border transition-all duration-300 ${
-                          isCenter
-                            ? "shadow-lg border-blue-200 ring-2 ring-blue-100"
-                            : "shadow-sm border-gray-100"
-                        }`}
+                        className={`review-card bg-white rounded-lg p-6 border transition-all duration-300 ${isCenter
+                          ? "shadow-lg border-blue-200 ring-2 ring-blue-100"
+                          : "shadow-sm border-gray-100"
+                          }`}
                         animate={{
                           scale: isCenter ? 1.08 : 1,
                           y: isCenter ? -12 : 0,
@@ -465,9 +452,8 @@ const ClientReviews = () => {
                         </div>
                         {/* Review Title */}
                         <h5
-                          className={`font-semibold mb-3 text-sm ${
-                            isCenter ? "text-blue-900" : "text-gray-900"
-                          }`}
+                          className={`font-semibold mb-3 text-sm ${isCenter ? "text-blue-900" : "text-gray-900"
+                            }`}
                         >
                           {review.title}
                         </h5>
@@ -516,11 +502,10 @@ const ClientReviews = () => {
                 <motion.button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentSlide
-                      ? "bg-gray-800"
-                      : "bg-gray-300 hover:bg-gray-400"
-                  }`}
+                  className={`w-3 h-3 rounded-full transition-colors ${index === currentSlide
+                    ? "bg-gray-800"
+                    : "bg-gray-300 hover:bg-gray-400"
+                    }`}
                   whileHover={{ scale: 1.2 }}
                   initial={false}
                 />

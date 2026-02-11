@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchProperties } from '../store/slices/propertySlice';
 import { Link } from 'react-router-dom';
-import { FaStar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import lunarisLogo from '../assets/images/Lunaris-management-logo.png';
 import Footer from '../components/Footer';
 
@@ -109,14 +109,14 @@ const Properties = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Navigation */}
-      <nav className="relative z-20 px-4 sm:px-6 lg:px-8 py-3 sm:py-4" style={{backgroundColor: '#121b2d'}}>
+      <nav className="relative z-20 px-4 sm:px-6 lg:px-8 py-3 sm:py-4" style={{ backgroundColor: '#121b2d' }}>
         <div className="flex items-center justify-between">
           {/* Logo - Using actual logo image */}
           <div className="flex items-center space-x-3">
             <Link to="/">
-              <img 
-                src={lunarisLogo} 
-                alt="Lunaris Management & Co." 
+              <img
+                src={lunarisLogo}
+                alt="Lunaris Management & Co."
                 className="h-12 w-24 sm:h-16 sm:w-32 lg:h-20 lg:w-48"
               />
             </Link>
@@ -136,19 +136,19 @@ const Properties = () => {
             <Link to="/contact" className="hover:text-blue-300 transition-colors font-medium">
               Contact us
             </Link>
-              <a 
-                href="https://calendly.com/lunarismanagement14/30min" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
-              >
-                Book a Meeting
-              </a>
+            <a
+              href="https://calendly.com/lunarismanagement14/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
+            >
+              Book a Meeting
+            </a>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button 
+            <button
               onClick={toggleMobileMenu}
               className="text-white p-2 relative z-50"
             >
@@ -166,47 +166,46 @@ const Properties = () => {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`md:hidden fixed inset-0 bg-slate-900/95 backdrop-blur-sm transition-all duration-300 z-40 ${
-          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}>
+        <div className={`md:hidden fixed inset-0 bg-slate-900/95 backdrop-blur-sm transition-all duration-300 z-40 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}>
           <div className="flex flex-col items-center justify-center h-full space-y-8 text-white text-lg">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="hover:text-blue-300 transition-colors font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Home
             </Link>
-            <Link 
-              to="/about" 
+            <Link
+              to="/about"
               className="hover:text-blue-300 transition-colors font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               About
             </Link>
-            <Link 
-              to="/properties" 
+            <Link
+              to="/properties"
               className="hover:text-blue-300 transition-colors font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Properties
             </Link>
-            <Link 
-              to="/contact" 
+            <Link
+              to="/contact"
               className="hover:text-blue-300 transition-colors font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact us
             </Link>
-              <a 
-                href="https://calendly.com/lunarismanagement14/30min" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Book a Meeting
-              </a>
+            <a
+              href="https://calendly.com/lunarismanagement14/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Book a Meeting
+            </a>
           </div>
         </div>
       </nav>
@@ -214,7 +213,7 @@ const Properties = () => {
       {/* Page Header with Curvy/Wavy Background Design */}
       <motion.div
         className="relative py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden"
-        style={{backgroundColor: '#121b2d'}}
+        style={{ backgroundColor: '#121b2d' }}
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -223,27 +222,27 @@ const Properties = () => {
         <div className="absolute inset-0 overflow-hidden">
           {/* Primary Wave */}
           <div className="absolute inset-0">
-            <svg 
-              viewBox="0 0 1200 800" 
+            <svg
+              viewBox="0 0 1200 800"
               className="w-full h-full absolute inset-0"
               style={{ transform: 'scale(1.1) sm:scale(1.2)' }}
             >
               <defs>
                 <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style={{stopColor: 'rgba(59, 130, 246, 0.15)', stopOpacity: 1}} />
-                  <stop offset="50%" style={{stopColor: 'rgba(147, 51, 234, 0.15)', stopOpacity: 1}} />
-                  <stop offset="100%" style={{stopColor: 'rgba(59, 130, 246, 0.15)', stopOpacity: 1}} />
+                  <stop offset="0%" style={{ stopColor: 'rgba(59, 130, 246, 0.15)', stopOpacity: 1 }} />
+                  <stop offset="50%" style={{ stopColor: 'rgba(147, 51, 234, 0.15)', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: 'rgba(59, 130, 246, 0.15)', stopOpacity: 1 }} />
                 </linearGradient>
                 <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style={{stopColor: 'rgba(147, 51, 234, 0.12)', stopOpacity: 1}} />
-                  <stop offset="100%" style={{stopColor: 'rgba(59, 130, 246, 0.12)', stopOpacity: 1}} />
+                  <stop offset="0%" style={{ stopColor: 'rgba(147, 51, 234, 0.12)', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: 'rgba(59, 130, 246, 0.12)', stopOpacity: 1 }} />
                 </linearGradient>
                 <linearGradient id="waveGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style={{stopColor: 'rgba(16, 185, 129, 0.08)', stopOpacity: 1}} />
-                  <stop offset="100%" style={{stopColor: 'rgba(59, 130, 246, 0.08)', stopOpacity: 1}} />
+                  <stop offset="0%" style={{ stopColor: 'rgba(16, 185, 129, 0.08)', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: 'rgba(59, 130, 246, 0.08)', stopOpacity: 1 }} />
                 </linearGradient>
               </defs>
-              
+
               {/* Big Curly Wave Paths - Static */}
               <path
                 d="M0,300 C200,150 400,450 600,200 C800,50 1000,400 1200,250 L1200,800 L0,800 Z"
@@ -281,7 +280,7 @@ const Properties = () => {
           </div>
 
           {/* Gradient Overlay */}
-          <div 
+          <div
             className="absolute inset-0"
             style={{
               background: 'radial-gradient(ellipse at center, rgba(18, 27, 45, 0.1) 0%, rgba(18, 27, 45, 0.9) 100%)'
@@ -296,7 +295,7 @@ const Properties = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6" style={{fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.05em'}}>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.05em' }}>
             PROPERTIES
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-xs sm:max-w-lg md:max-w-2xl mx-auto leading-relaxed px-4">
@@ -306,21 +305,21 @@ const Properties = () => {
 
         {/* Bottom Curvy/Wavy Border */}
         <div className="absolute bottom-0 left-0 w-full overflow-hidden">
-          <svg 
-            viewBox="0 0 1200 160" 
+          <svg
+            viewBox="0 0 1200 160"
             className="w-full h-24 sm:h-28 md:h-32"
             preserveAspectRatio="none"
           >
             <defs>
               <linearGradient id="bottomWaveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style={{stopColor: 'rgba(248, 250, 252, 0.9)', stopOpacity: 1}} />
-                <stop offset="50%" style={{stopColor: 'rgba(248, 250, 252, 1)', stopOpacity: 1}} />
-                <stop offset="100%" style={{stopColor: 'rgba(248, 250, 252, 0.9)', stopOpacity: 1}} />
+                <stop offset="0%" style={{ stopColor: 'rgba(248, 250, 252, 0.9)', stopOpacity: 1 }} />
+                <stop offset="50%" style={{ stopColor: 'rgba(248, 250, 252, 1)', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: 'rgba(248, 250, 252, 0.9)', stopOpacity: 1 }} />
               </linearGradient>
               <linearGradient id="bottomWaveGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style={{stopColor: 'rgba(248, 250, 252, 0.8)', stopOpacity: 1}} />
-                <stop offset="50%" style={{stopColor: 'rgba(248, 250, 252, 0.9)', stopOpacity: 1}} />
-                <stop offset="100%" style={{stopColor: 'rgba(248, 250, 252, 0.8)', stopOpacity: 1}} />
+                <stop offset="0%" style={{ stopColor: 'rgba(248, 250, 252, 0.8)', stopOpacity: 1 }} />
+                <stop offset="50%" style={{ stopColor: 'rgba(248, 250, 252, 0.9)', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: 'rgba(248, 250, 252, 0.8)', stopOpacity: 1 }} />
               </linearGradient>
             </defs>
             <path
@@ -337,58 +336,58 @@ const Properties = () => {
             />
           </svg>
         </div>
-  </motion.div>
+      </motion.div>
 
       {/* Search Filters - Location and Guests only */}
-        <motion.div
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center rounded-2xl sm:rounded-full shadow-md border border-gray-200 overflow-hidden" style={{background: 'linear-gradient(135deg, #C3DFED 0%, #E7EDEF 100%)'}}>
-            {/* Location */}
-            <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4 border-b sm:border-b-0 sm:border-r border-gray-200">
-              <div className="space-y-1">
-                <label className="block text-xs font-semibold text-gray-900 uppercase tracking-wide">Location</label>
-                <input
-                  type="text"
-                  placeholder="Where are you going?"
-                  className="w-full text-sm text-gray-600 placeholder-gray-400 border-none outline-none bg-transparent font-medium"
-                  value={searchFilters.location}
-                  onChange={(e) => setSearchFilters({...searchFilters, location: e.target.value})}
-                />
-              </div>
-            </div>
-
-            {/* Guests */}
-            <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4">
-              <div className="space-y-1">
-                <label className="block text-xs font-semibold text-gray-900 uppercase tracking-wide">Guests</label>
-                <input
-                  type="text"
-                  placeholder="Add guests"
-                  className="w-full text-sm text-gray-600 placeholder-gray-400 border-none outline-none bg-transparent font-medium"
-                  value={searchFilters.guests}
-                  onChange={(e) => setSearchFilters({...searchFilters, guests: e.target.value})}
-                />
-              </div>
-            </div>
-
-            {/* Search Button */}
-            <div className="px-2 py-2 sm:py-0 flex justify-center">
-              <button
-                onClick={handleSearch}
-                className="bg-[#172c3e] hover:bg-[#325d83] text-white p-3 rounded-full transition-colors duration-200 flex items-center justify-center shadow-lg w-full sm:w-auto"
-              >
-                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
+      <motion.div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center rounded-2xl sm:rounded-full shadow-md border border-gray-200 overflow-hidden" style={{ background: 'linear-gradient(135deg, #C3DFED 0%, #E7EDEF 100%)' }}>
+          {/* Location */}
+          <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4 border-b sm:border-b-0 sm:border-r border-gray-200">
+            <div className="space-y-1">
+              <label className="block text-xs font-semibold text-gray-900 uppercase tracking-wide">Location</label>
+              <input
+                type="text"
+                placeholder="Where are you going?"
+                className="w-full text-sm text-gray-600 placeholder-gray-400 border-none outline-none bg-transparent font-medium"
+                value={searchFilters.location}
+                onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
+              />
             </div>
           </div>
-  </motion.div>
+
+          {/* Guests */}
+          <div className="flex-1 px-4 sm:px-6 py-3 sm:py-4">
+            <div className="space-y-1">
+              <label className="block text-xs font-semibold text-gray-900 uppercase tracking-wide">Guests</label>
+              <input
+                type="text"
+                placeholder="Add guests"
+                className="w-full text-sm text-gray-600 placeholder-gray-400 border-none outline-none bg-transparent font-medium"
+                value={searchFilters.guests}
+                onChange={(e) => setSearchFilters({ ...searchFilters, guests: e.target.value })}
+              />
+            </div>
+          </div>
+
+          {/* Search Button */}
+          <div className="px-2 py-2 sm:py-0 flex justify-center">
+            <button
+              onClick={handleSearch}
+              className="bg-[#172c3e] hover:bg-[#325d83] text-white p-3 rounded-full transition-colors duration-200 flex items-center justify-center shadow-lg w-full sm:w-auto"
+            >
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Properties Grid - Matching the exact layout from image */}
       <motion.div
@@ -442,8 +441,8 @@ const Properties = () => {
                   <motion.img
                     src={property.images && property.images.length > 0
                       ? (property.images[currentIndex].startsWith('http')
-                          ? property.images[currentIndex]
-                          : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/public/images/properties/${property.images[currentIndex]}`)
+                        ? property.images[currentIndex]
+                        : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/public/images/properties/${property.images[currentIndex]}`)
                       : '/default-property.jpg'}
                     alt={property.title}
                     className="w-full h-64 object-cover"
@@ -484,11 +483,10 @@ const Properties = () => {
                             e.stopPropagation();
                             goToImage(property._id, index);
                           }}
-                          className={`w-2 h-2 rounded-full transition-all ${
-                            index === currentIndex 
-                              ? 'bg-white' 
+                          className={`w-2 h-2 rounded-full transition-all ${index === currentIndex
+                              ? 'bg-white'
                               : 'bg-white bg-opacity-50 hover:bg-opacity-75'
-                          }`}
+                            }`}
                         />
                       ))}
                     </div>
