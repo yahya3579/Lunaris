@@ -257,7 +257,7 @@ const ContactUs = () => {
               rel="noopener noreferrer"
               className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
             >
-              Book a Meeting
+              Book a Free Strategy Call
             </a>
           </div>
 
@@ -319,7 +319,7 @@ const ContactUs = () => {
               className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Book a Meeting
+              Book a Free Strategy Call
             </a>
           </div>
         </div>
@@ -660,7 +660,7 @@ const ContactUs = () => {
               className="group border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105 hover:shadow-xl flex items-center justify-center"
             >
               <FaHeadset className="mr-2 group-hover:animate-pulse" />
-              Book a Meeting
+              Schedule Your Strategy Call
             </a>
           </div>
         </div>

@@ -1,17 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import lunarisLogo from '../assets/images/Lunaris-management-logo.png';
 import landingPageBg from '../assets/images/landing-page.svg';
 import landingBgJpeg from '../assets/images/landing-bg.jpeg';
-import TextType from './TextType';
+
+// Animated Counter Component
+const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const end = parseInt(target);
+    const stepTime = Math.max(Math.floor(duration / end), 20);
+    const timer = setInterval(() => {
+      start += 1;
+      setCount(start);
+      if (start >= end) {
+        clearInterval(timer);
+        setCount(end);
+      }
+    }, stepTime);
+    return () => clearInterval(timer);
+  }, [isInView, target, duration]);
+
+  return (
+    <span ref={ref}>
+      {prefix}{count}{suffix}
+    </span>
+  );
+};
 
 const LandingPage = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1200);
-  const [searchLocation, setSearchLocation] = useState("");
-  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -21,84 +46,80 @@ const LandingPage = () => {
     const handleResize = () => {
       setIsLargeScreen(window.innerWidth >= 1200);
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  const handleSearch = () => {
-    const params = new URLSearchParams();
-    if (searchLocation) params.append("location", searchLocation);
-    navigate(`/properties?${params.toString()}`);
+
+  const scrollToServices = () => {
+    const servicesSection = document.getElementById('services-section');
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.8 }}
-        className={`min-h-screen relative overflow-hidden ${
-          isLargeScreen 
-            ? '' 
-            : ''
-        }`}
-        style={{
-          backgroundImage: isLargeScreen ? `url(${landingPageBg})` : `url(${landingBgJpeg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-      {/* Overlay for better text readability */}
-      <div className={`absolute inset-0 ${
-        isLargeScreen ? '' : 'bg-black/40'
-      }`}></div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8 }}
+      className="min-h-screen relative overflow-hidden"
+      style={{
+        backgroundImage: isLargeScreen ? `url(${landingPageBg})` : `url(${landingBgJpeg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      {/* Dark Overlay for readability */}
+      <div className={`absolute inset-0 ${isLargeScreen ? 'bg-black/30' : 'bg-black/50'}`}></div>
 
       {/* Navigation */}
       <motion.nav
-        className="relative z-20 px-8 py-4"
+        className="relative z-20 px-6 sm:px-8 py-4"
         initial={{ y: -60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
       >
-        <div className="flex items-center justify-between">
-          {/* Logo - Using actual logo image */}
-            <div className="flex items-center space-x-3">
-              <Link to="/">
-                <img 
-                  src={lunarisLogo} 
-                  alt="Lunaris Management & Co." 
-                  className="h-16 w-32 sm:h-20 sm:w-40 lg:h-20 lg:w-48"
-                />
-              </Link>
-            </div>
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center space-x-3">
+            <Link to="/">
+              <img
+                src={lunarisLogo}
+                alt="Lunaris Management & Co."
+                className="h-16 w-32 sm:h-20 sm:w-40 lg:h-20 lg:w-48"
+              />
+            </Link>
+          </div>
 
-          {/* Navigation Links - Exact match to design */}
+          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-8 text-white text-sm">
-            <Link to="/" className="hover:text-blue-300 transition-colors font-medium">
+            <Link to="/" className="hover:text-blue-200 transition-colors duration-300 font-medium">
               Home
             </Link>
-            <Link to="/about" className="hover:text-blue-300 transition-colors font-medium">
+            <Link to="/about" className="hover:text-blue-200 transition-colors duration-300 font-medium">
               About
             </Link>
-              <Link to="/properties" className="hover:text-blue-300 transition-colors font-medium">
-                Properties
-              </Link>
-            <Link to="/contact" className="hover:text-blue-300 transition-colors font-medium">
+            <Link to="/properties" className="hover:text-blue-200 transition-colors duration-300 font-medium">
+              Properties
+            </Link>
+            <Link to="/contact" className="hover:text-blue-200 transition-colors duration-300 font-medium">
               Contact us
             </Link>
-            <a 
-              href="https://calendly.com/lunarismanagement14/30min" 
+            <a
+              href="https://calendly.com/lunarismanagement14/30min"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
+              className="bg-white/10 backdrop-blur-sm border border-white/40 px-6 py-2.5 rounded-full hover:bg-white hover:text-slate-900 transition-all duration-300 font-semibold"
             >
-              Book a Meeting
+              Book a Free Strategy Call
             </a>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button 
+            <button
               onClick={toggleMobileMenu}
               className="text-white p-2 relative z-50"
             >
@@ -123,127 +144,153 @@ const LandingPage = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '100%', opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="md:hidden fixed inset-0 bg-slate-900/95 backdrop-blur-sm transition-all duration-300 z-40"
+              className="md:hidden fixed inset-0 bg-slate-900/95 backdrop-blur-sm z-40"
             >
               <div className="flex flex-col items-center justify-center h-full space-y-8 text-white text-lg">
-                <Link 
-                  to="/" 
-                  className="hover:text-blue-300 transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
+                <Link to="/" className="hover:text-blue-300 transition-colors font-medium" onClick={() => setIsMobileMenuOpen(false)}>
                   Home
                 </Link>
-                <Link 
-                  to="/about" 
-                  className="hover:text-blue-300 transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
+                <Link to="/about" className="hover:text-blue-300 transition-colors font-medium" onClick={() => setIsMobileMenuOpen(false)}>
                   About
                 </Link>
-                <Link 
-                  to="/properties" 
-                  className="hover:text-blue-300 transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
+                <Link to="/properties" className="hover:text-blue-300 transition-colors font-medium" onClick={() => setIsMobileMenuOpen(false)}>
                   Properties
                 </Link>
-                <Link 
-                  to="/contact" 
-                  className="hover:text-blue-300 transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
+                <Link to="/contact" className="hover:text-blue-300 transition-colors font-medium" onClick={() => setIsMobileMenuOpen(false)}>
                   Contact us
                 </Link>
-                <a 
-                  href="https://calendly.com/lunarismanagement14/30min" 
+                <a
+                  href="https://calendly.com/lunarismanagement14/30min"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
+                  className="bg-white/10 border border-white/40 px-6 py-2.5 rounded-full hover:bg-white hover:text-slate-900 transition-all font-semibold"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Book a Meeting
+                  Book a Free Strategy Call
                 </a>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-  </motion.nav>
+      </motion.nav>
 
-      {/* Main Content */}
-      <div className="relative z-10 px-8 pt-8 md:pt-0 pb-24 xl:pb-40">
+      {/* Hero Content */}
+      <div className="relative z-10 px-6 sm:px-8 pt-8 md:pt-4 pb-24 xl:pb-32">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[calc(100vh-200px)]">
-            {/* Left Content - Exact match to design */}
+          <div className="flex flex-col items-start justify-center min-h-[calc(100vh-220px)]">
+            {/* Main Headline */}
             <motion.div
-              className="text-white space-y-8"
-              initial={{ x: -80, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-white max-w-3xl"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
+              <motion.h1
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white"
+                style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.02em', color: '#FFFFFF' }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.4 }}
               >
-                <div className="mb-2">
-                  <span className="text-3xl lg:text-4xl font-semibold drop-shadow-md" style={{ color: '#cae1fe' }}>Global STR</span>
-                </div>
-                <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
-                  <TextType 
-                    text={["Co-Hosting Experts", "Management company"]}
-                    typingSpeed={70}
-                    pauseDuration={1500}
-                    showCursor={true}
-                    cursorCharacter="|"
-                    cursorClassName="text-white/70"
-                    as="div"
-                    className="block"
-                    startOnVisible={true}
-                    textColors={['#fff', '#fff', '#fff']}
-                  />
-                </h1>
-              </motion.div>
+                Turn Your Property Into a{' '}
+                <span className="bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent">
+                  High‑Performing Asset.
+                </span>
+              </motion.h1>
+
+              {/* Sub Headline */}
               <motion.p
-                className="text-base lg:text-md opacity-80 max-w-sm leading-relaxed"
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.7 }}
+                className="text-base sm:text-lg md:text-xl text-blue-100/90 max-w-2xl leading-relaxed mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.6 }}
               >
-                We are glad to have you around. Feel free to browse our website.
+                Strategic short‑term rental revenue management, professional co‑hosting, and full
+                property operations built to maximize income and guest experience.
               </motion.p>
-              {/* Search bar - matching design exactly */}
+
+              {/* CTAs */}
               <motion.div
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.7, delay: 1 }}
+                className="flex flex-col sm:flex-row gap-4 mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.8 }}
               >
-                <div className="bg-white rounded-full px-2 py-1 flex items-center max-w-sm shadow-lg">
-                  <input 
-                    type="text" 
-                    placeholder="Find a Location" 
-                    className="bg-transparent text-slate-900 placeholder-slate-400 outline-none flex-1 px-4 py-1 text-sm"
-                    value={searchLocation}
-                    onChange={e => setSearchLocation(e.target.value)}
-                  />
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-600 transition-colors"
-                    onClick={handleSearch}
-                  >
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </motion.button>
-                </div>
+                <a
+                  href="https://calendly.com/lunarismanagement14/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary text-center"
+                  id="hero-cta-primary"
+                >
+                  Book a Free Strategy Call
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </a>
+                <button
+                  onClick={scrollToServices}
+                  className="btn-secondary text-center"
+                  id="hero-cta-secondary"
+                >
+                  See How We Increase Revenue
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
+                </button>
+              </motion.div>
+
+              {/* Trust Line */}
+              <motion.div
+                className="flex flex-wrap items-center text-sm sm:text-base text-blue-100/70 mb-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: 1.0 }}
+              >
+                <span>Data‑driven pricing</span>
+                <span className="trust-separator"></span>
+                <span>24/7 guest support</span>
+                <span className="trust-separator"></span>
+                <span>Performance reporting</span>
+                <span className="trust-separator"></span>
+                <span>Brand growth strategy</span>
+              </motion.div>
+
+              {/* Animated Revenue Counter */}
+              <motion.div
+                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 1.2 }}
+              >
+                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-white font-bold text-lg sm:text-xl">
+                  <AnimatedCounter target={32} prefix="+" suffix="%" duration={2000} />
+                </span>
+                <span className="text-blue-100/80 text-sm sm:text-base">Revenue Growth Average</span>
               </motion.div>
             </motion.div>
-            {/* ...existing code... (right column, if any) */}
           </div>
         </div>
       </div>
 
-  </motion.div>
+      {/* Smooth Scroll Indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+      >
+        <span className="text-white/50 text-xs mb-2 tracking-widest uppercase">Scroll</span>
+        <motion.div
+          className="animate-scroll-indicator"
+        >
+          <svg className="w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7" />
+          </svg>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 
