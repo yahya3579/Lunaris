@@ -142,7 +142,7 @@ const Properties = () => {
               rel="noopener noreferrer"
               className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
             >
-              Book a Meeting
+              Book a Free Strategy Call
             </a>
           </div>
 
@@ -204,7 +204,7 @@ const Properties = () => {
               className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Book a Meeting
+              Book a Free Strategy Call
             </a>
           </div>
         </div>
@@ -484,8 +484,8 @@ const Properties = () => {
                             goToImage(property._id, index);
                           }}
                           className={`w-2 h-2 rounded-full transition-all ${index === currentIndex
-                              ? 'bg-white'
-                              : 'bg-white bg-opacity-50 hover:bg-opacity-75'
+                            ? 'bg-white'
+                            : 'bg-white bg-opacity-50 hover:bg-opacity-75'
                             }`}
                         />
                       ))}

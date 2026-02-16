@@ -139,7 +139,7 @@ const PropertyDetail = () => {
               rel="noopener noreferrer"
               className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
             >
-              Book a Meeting
+              Book a Free Strategy Call
             </a>
           </div>
 
@@ -201,7 +201,7 @@ const PropertyDetail = () => {
               className="bg-transparent border border-white/60 px-5 py-2 rounded-full hover:bg-white hover:text-slate-900 transition-all font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Book a Meeting
+              Book a Free Strategy Call
             </a>
           </div>
         </div>
@@ -274,7 +274,7 @@ const PropertyDetail = () => {
                   src={getImageUrl(image)}
                   alt={`${propertyData.title || propertyData.name} ${index + 2}`}
                   className={`w-full h-full object-cover ${index === 1 ? 'rounded-tr-lg' :
-                      index === 3 ? 'rounded-br-lg' : ''
+                    index === 3 ? 'rounded-br-lg' : ''
                     }`}
                 />
                 {index === 3 && Array.isArray(propertyData.images) && propertyData.images.length > 5 && (
