@@ -242,7 +242,7 @@ const LandingPage = () => {
 
               {/* Trust Line */}
               <motion.div
-                className="flex flex-wrap items-center text-sm sm:text-base text-blue-100/70 mb-8"
+                className="flex flex-wrap items-center text-sm sm:text-base text-white font-semibold mb-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.7, delay: 1.0 }}

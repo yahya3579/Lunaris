@@ -98,7 +98,7 @@ const WhyLunaris = () => {
                                 className="text-base font-semibold italic"
                                 style={{ color: 'var(--color-primary)' }}
                             >
-                                "We treat every property as a growth asset — not just a listing."
+                                "We treat every property as a growth asset, not just a listing."
                             </p>
                         </motion.div>
                     </motion.div>

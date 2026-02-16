@@ -83,7 +83,7 @@ const WhatWeDo = () => {
                     </h2>
 
                     <p className="text-base sm:text-lg leading-relaxed" style={{ color: 'var(--color-text-medium)' }}>
-                        At Lunaris Management & Co., we don't just manage listings — we{' '}
+                        At Lunaris Management & Co., we don't just manage listings. We{' '}
                         <strong style={{ color: 'var(--color-text-dark)' }}>engineer performance</strong>.
                         Our systems combine revenue optimization, hospitality operations, and brand
                         positioning to transform short‑term rentals into consistent, high‑yield assets.
@@ -140,19 +140,19 @@ const WhatWeDo = () => {
 
                             {/* Accent line */}
                             <div
-                                className="w-10 h-1 rounded-full mx-auto mb-4"
+                                className="w-25 h-1 rounded-full mx-auto mb-4"
                                 style={{ background: 'var(--color-primary-light)' }}
                             ></div>
 
                             {/* Description */}
-                            <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-medium)' }}>
+                            < p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-medium)' }}>
                                 {pillar.description}
                             </p>
                         </motion.div>
                     ))}
                 </motion.div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 };
 

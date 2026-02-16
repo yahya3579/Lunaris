@@ -226,7 +226,7 @@ const About = () => {
                 </h2>
 
                 <p className="text-base leading-relaxed" style={{ color: 'var(--color-text-medium)' }}>
-                  Lunaris Management & Co. was founded with a single objective — to elevate short‑term
+                  <strong style={{ color: 'var(--color-text-dark)' }}> Lunaris Management & Co.</strong> was founded with a single objective to elevate short‑term
                   rental properties through <strong style={{ color: 'var(--color-text-dark)' }}>structured revenue strategy</strong> and{' '}
                   <strong style={{ color: 'var(--color-text-dark)' }}>operational excellence</strong>.
                 </p>
