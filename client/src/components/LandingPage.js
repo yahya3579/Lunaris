@@ -200,7 +200,7 @@ const LandingPage = () => {
 
               {/* Sub Headline */}
               <motion.p
-                className="text-base sm:text-lg md:text-xl text-blue-100/90 max-w-2xl leading-relaxed mb-8"
+                className="text-base sm:text-lg md:text-xl text-white font-semibold max-w-2xl leading-relaxed mb-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.6 }}
